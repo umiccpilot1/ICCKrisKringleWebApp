@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { completeMagicLink } from '../services/api.js';
@@ -15,8 +15,14 @@ export default function AuthCallback() {
   const email = query.get('email');
   const navigate = useNavigate();
   const { setUser } = useAuth();
+  const hasHandled = useRef(false);
 
   useEffect(() => {
+    if (hasHandled.current) {
+      return;
+    }
+    hasHandled.current = true;
+
     async function completeLogin() {
       if (!token || !email) {
         toast.error('Invalid login link');
@@ -33,8 +39,8 @@ export default function AuthCallback() {
           isAdmin: data.employee.isAdmin,
           isSuperAdmin: data.employee.isSuperAdmin
         });
-        toast.success('Welcome back!');
-        navigate('/');
+  toast.success('Welcome back!');
+  navigate('/portal');
       } catch (error) {
         toast.error(error.response?.data?.message || 'Unable to sign in');
         navigate('/login');

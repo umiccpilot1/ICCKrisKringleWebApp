@@ -22,15 +22,15 @@ export default function WishlistSettings({ settings, onRefresh }) {
   }
 
   return (
-    <form onSubmit={handleSave} className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-soft backdrop-blur">
-      <h2 className="text-lg font-semibold text-white">Wishlist settings</h2>
-      <div className="mt-4 space-y-5 text-sm text-slate-200">
-        <label className="flex items-center gap-3">
+    <form onSubmit={handleSave} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-card text-center">
+      <h2 className="text-lg font-semibold text-gray-900">Wishlist settings</h2>
+      <div className="mt-4 space-y-5 text-sm text-gray-700">
+        <label className="flex items-center justify-center gap-3">
           <input
             type="checkbox"
             checked={showAll}
             onChange={(event) => setShowAll(event.target.checked)}
-            className="h-4 w-4 rounded border-white/20 bg-white/10 text-aurora focus:ring-aurora/60"
+            className="h-4 w-4 rounded border-gray-300 text-brand-500 focus:ring-brand-500"
           />
           Allow employees to view all confirmed wishlists
         </label>
@@ -38,13 +38,13 @@ export default function WishlistSettings({ settings, onRefresh }) {
           Wishlist deadline
           <input
             type="datetime-local"
-            className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-sm text-white focus:border-aurora/60 focus:outline-none"
+            className="mt-2 w-full rounded-lg border border-gray-300 bg-white px-3 py-3 text-sm text-gray-900 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none"
             value={deadline}
             onChange={(event) => setDeadline(event.target.value)}
           />
         </label>
       </div>
-      <div className="mt-6">
+      <div className="mt-6 flex justify-center">
         <Button type="submit">Save settings</Button>
       </div>
     </form>

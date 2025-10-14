@@ -31,24 +31,24 @@ export default function ConfirmWishlist() {
   }, [query]);
 
   if (status === 'pending') {
-    return <p className="text-center text-sm text-slate-400">Confirming your wishlist…</p>;
+    return <p className="text-center text-sm text-icc-gray-500">Confirming your wishlist…</p>;
   }
 
   if (status === 'success') {
     return (
-      <div className="mx-auto max-w-lg rounded-3xl border border-white/10 bg-white/5 p-10 text-center shadow-soft backdrop-blur">
-        <h1 className="font-display text-3xl font-semibold text-white">No confirmation needed</h1>
-        <p className="mt-4 text-sm text-slate-300">Your wishlist is already saved. You can return to the dashboard at any time.</p>
-        <Button onClick={() => navigate('/')}>Back to dashboard</Button>
+      <div className="mx-auto max-w-lg rounded-3xl border border-white/60 bg-white p-10 text-center shadow-card">
+        <h1 className="text-3xl font-bold text-icc-gray-900">No confirmation needed</h1>
+        <p className="mt-4 text-sm text-icc-gray-600">Your wishlist is already saved. You can return to the dashboard at any time.</p>
+  <Button onClick={() => navigate('/portal')}>Back to dashboard</Button>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-lg rounded-3xl border border-white/10 bg-white/5 p-10 text-center shadow-soft backdrop-blur">
-      <h1 className="font-display text-3xl font-semibold text-white">Link issue</h1>
-      <p className="mt-4 text-sm text-slate-300">The confirmation link is not valid. Please update your wishlist from the dashboard instead.</p>
-      <Button onClick={() => navigate('/')}>Return home</Button>
+    <div className="mx-auto max-w-lg rounded-3xl border border-white/60 bg-white p-10 text-center shadow-card">
+      <h1 className="text-3xl font-bold text-icc-gray-900">Link issue</h1>
+      <p className="mt-4 text-sm text-icc-gray-600">The confirmation link is not valid. Please update your wishlist from the dashboard instead.</p>
+  <Button onClick={() => navigate('/portal')}>Return to dashboard</Button>
     </div>
   );
 }

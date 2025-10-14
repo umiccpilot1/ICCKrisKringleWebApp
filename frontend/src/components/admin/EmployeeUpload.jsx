@@ -30,15 +30,15 @@ export default function EmployeeUpload({ onComplete }) {
   }
 
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-soft backdrop-blur">
-      <h2 className="text-lg font-semibold text-white">Upload employees</h2>
-      <p className="mt-2 text-sm text-slate-300">Import an Excel file containing columns for Name, Email, and Admin (Yes/No).</p>
-      <form className="mt-5 space-y-4" onSubmit={handleUpload}>
+    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-card text-center">
+      <h2 className="text-lg font-semibold text-gray-900">Upload employees</h2>
+      <p className="mt-2 text-sm text-muted-700">Import an Excel file containing columns for Name, Email, and Admin (Yes/No).</p>
+      <form className="mt-5 flex flex-col items-center gap-4" onSubmit={handleUpload}>
         <input
           type="file"
           accept=".xlsx,.xls"
           onChange={(event) => setFile(event.target.files[0] || null)}
-          className="block w-full text-xs text-slate-300 file:mr-4 file:rounded-full file:border-0 file:bg-aurora/20 file:px-4 file:py-2 file:text-xs file:uppercase file:tracking-[0.3em] file:text-white hover:file:bg-aurora/30"
+          className="w-full text-xs text-gray-700 file:mr-4 file:rounded-lg file:border-0 file:bg-brand-50 file:px-4 file:py-2 file:text-xs file:font-semibold file:uppercase file:tracking-wide file:text-brand-500 hover:file:bg-brand-100 file:transition-colors"
         />
         <Button type="submit" disabled={loading}>{loading ? 'Uploading…' : 'Upload'}</Button>
       </form>

@@ -1,8 +1,14 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { requestMagicLink } from '../services/api.js';
 import Button from '../components/common/Button.jsx';
+
+const features = [
+  { label: 'No passwords', description: 'Magic link authentication keeps access secure.' },
+  { label: 'Instant access', description: 'Log in within seconds from any device.' },
+  { label: 'Easy coordination', description: 'Manage wishlists and assignments in one hub.' }
+];
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -22,37 +28,54 @@ export default function Login() {
       setLoading(false);
     }
   }
+
   return (
-    <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr]">
-      <div className="space-y-6">
-        <p className="inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-1 text-xs uppercase tracking-[0.35em] text-slate-300">
-          Seamless holiday coordination
-        </p>
-        <h1 className="font-display text-4xl font-semibold text-white sm:text-5xl">
-          A polished way to share gift ideas with your team.
+    <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+      <div className="space-y-8">
+        <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-icc-gray-100 border border-icc-gray-200 text-sm font-semibold text-icc-blue">
+          <span className="flex h-2 w-2 rounded-full bg-icc-orange animate-pulse" aria-hidden="true" />
+          Seamless gift coordination
+        </span>
+        <h1 className="text-5xl lg:text-6xl font-bold leading-tight text-icc-gray-900">
+          Secure access to the Kris Kringle portal
         </h1>
-        <p className="max-w-xl text-base text-slate-300">
-          Use your company email to receive a secure magic link. Once inside, curate wishlists, view assignments, and manage the exchange with confidence.
+        <p className="text-lg text-icc-gray-600 leading-relaxed max-w-xl">
+          Manage wishlists, review assignments, and keep your holiday exchange running smoothly—all through a secure magic link delivered to your inbox.
         </p>
+        <div className="grid sm:grid-cols-3 gap-6">
+          {features.map((feature) => (
+            <div key={feature.label} className="bg-white border border-icc-gray-200 rounded-2xl p-5 shadow-card">
+              <h3 className="text-base font-semibold text-icc-gray-900 mb-2">{feature.label}</h3>
+              <p className="text-sm text-icc-gray-600 leading-relaxed">{feature.description}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
-      <div className="rounded-3xl border border-white/10 bg-white/5 p-8 shadow-soft backdrop-blur">
-        <h2 className="text-lg font-semibold text-white">Sign in with magic link</h2>
-        <p className="mt-2 text-sm text-slate-300">We’ll email you a one-time link—no passwords to remember.</p>
-        <form className="mt-6 space-y-5" onSubmit={handleSubmit}>
-          <label className="block text-sm font-medium text-slate-200">
-            Email address
+      <div className="bg-white border border-white/60 rounded-3xl shadow-card p-10">
+        <h2 className="text-2xl font-semibold text-icc-gray-900 mb-2">Sign in with a magic link</h2>
+        <p className="text-icc-gray-600 mb-8">Enter your work email and we&apos;ll send a secure link to access the employee portal.</p>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label htmlFor="email" className="block text-sm font-semibold text-icc-gray-700 mb-2">
+              Work Email
+            </label>
             <input
+              id="email"
               type="email"
               required
-              className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-sm text-white placeholder:text-slate-500 focus:border-aurora/60 focus:outline-none"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
+              className="w-full rounded-xl border border-icc-gray-200 px-4 py-3 text-sm focus:border-icc-blue focus:outline-none focus:ring-2 focus:ring-icc-blue/20"
               placeholder="you@company.com"
             />
-          </label>
-          <Button type="submit" disabled={loading}>{loading ? 'Sending…' : 'Send magic link'}</Button>
-          <p className="text-xs text-slate-500">By continuing you agree to keep your Kris Kringle assignment confidential until reveal day.</p>
+          </div>
+          <Button type="submit" variant="primary" size="md" className="w-full" disabled={loading}>
+            {loading ? 'Sending…' : 'Send magic link'}
+          </Button>
+          <p className="text-xs text-icc-gray-500 text-center">
+            By signing in you agree to keep your Kris Kringle assignment confidential until reveal day.
+          </p>
         </form>
       </div>
     </div>

@@ -69,37 +69,62 @@ export default function AdminPanel() {
   }
 
   if (loading) {
-    return <LoadingSpinner label="Loading admin data…" />;
+    return (
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <LoadingSpinner label="Loading admin data…" />
+      </div>
+    );
   }
 
   return (
-    <div className="space-y-12 text-slate-200">
-      <header className="rounded-3xl border border-white/10 bg-gradient-to-br from-iris/20 via-nightfall to-nightfall p-8 shadow-soft backdrop-blur">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <div>
-            <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Admin operations</p>
-            <h1 className="font-display text-3xl font-semibold text-white">Coordinate the entire exchange</h1>
-            <p className="mt-3 max-w-2xl text-sm text-slate-300">Upload employees, configure visibility, and orchestrate assignments with a polished control center.</p>
+    <div className="space-y-12 flex flex-col items-center">
+      <header className="relative w-full max-w-4xl overflow-hidden rounded-2xl border border-gray-200 bg-white p-8 shadow-card animate-fade-in-up">
+        <div className="relative flex flex-col items-center gap-4 text-center">
+          <div className="max-w-2xl">
+            <p className="text-xs uppercase tracking-wider text-brand-500 font-semibold flex items-center justify-center gap-2">
+              Admin operations
+            </p>
+            <h1 className="font-display text-3xl font-bold text-gray-900 mt-2 flex items-center justify-center gap-3">
+              Coordinate the entire exchange
+            </h1>
+            <p className="mt-3 max-w-2xl text-sm text-muted-700">Upload employees, configure visibility, and orchestrate assignments with a polished control center.</p>
           </div>
-          <div className="flex gap-3">
-            <Button onClick={handleGenerate} disabled={busy}>Generate assignments</Button>
-            <Button onClick={handleNotify} disabled={busy} variant="secondary">Email assignments</Button>
+          <div className="flex flex-wrap justify-center gap-3">
+            <Button onClick={handleGenerate} disabled={busy}>
+              Generate assignments
+            </Button>
+            <Button onClick={handleNotify} disabled={busy} variant="secondary">
+              Email assignments
+            </Button>
           </div>
         </div>
       </header>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <EmployeeUpload onComplete={loadData} />
-        {settings ? <WishlistSettings settings={settings} onRefresh={loadData} /> : null}
+      <div className="grid w-full max-w-4xl gap-6 md:grid-cols-2 md:place-items-center">
+        <div className="w-full animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+          <EmployeeUpload onComplete={loadData} />
+        </div>
+        {settings ? (
+          <div className="w-full animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+            <WishlistSettings settings={settings} onRefresh={loadData} />
+          </div>
+        ) : null}
       </div>
 
-      <section className="rounded-3xl border border-white/10 bg-white/5 p-8 shadow-soft backdrop-blur">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+      <section className="w-full max-w-4xl rounded-2xl border border-gray-200 bg-white p-8 shadow-card animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+        <div className="flex flex-col items-center gap-4 text-center sm:text-center">
           <div>
-            <p className="text-xs uppercase tracking-[0.35em] text-slate-400">Assignments overview</p>
-            <h2 className="font-display text-2xl font-semibold text-white">Employee pairings</h2>
+            <p className="text-xs uppercase tracking-wider text-brand-500 font-semibold flex items-center justify-center gap-2">
+              Assignments overview
+            </p>
+            <h2 className="font-display text-2xl font-bold text-gray-900 mt-2">Employee pairings</h2>
           </div>
-          <span className="text-xs text-slate-400">Showing {employees.length} team members</span>
+          <span className="text-xs text-muted-700 flex items-center justify-center gap-1.5">
+            <span className="flex h-5 w-5 items-center justify-center rounded-full bg-brand-50 text-brand-500 font-semibold">
+              {employees.length}
+            </span>
+            team members
+          </span>
         </div>
         <AssignmentList employees={employees.filter((employee) => !employee.is_admin)} />
       </section>

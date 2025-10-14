@@ -48,19 +48,29 @@ export default function WishlistForm() {
   }
 
   if (loading) {
-    return <p className="text-sm text-slate-400">Loading wishlist…</p>;
+    return (
+      <p className="text-sm text-slate-400 flex items-center gap-2">
+        <span className="animate-spin">⏳</span>
+        Loading wishlist…
+      </p>
+    );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
+    <form onSubmit={handleSubmit} className="space-y-5 text-center">
       <div className="space-y-4">
         {items.map((item, index) => (
-          <label key={index} className="block text-sm text-slate-200">
-            Item {index + 1}
+          <label key={index} className="block group">
+            <span className="text-sm font-medium text-gray-700 flex items-center justify-center gap-2">
+              <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-brand-50 text-brand-500 font-semibold group-hover:bg-brand-100 transition-colors">
+                {index + 1}
+              </span>
+              Item {index + 1}
+            </span>
             <input
               type="text"
               maxLength={120}
-              className="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-3 text-sm text-white placeholder:text-slate-500 focus:border-aurora/60 focus:outline-none"
+              className="mt-2 w-full max-w-lg mx-auto rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20 focus:outline-none transition-all hover:border-brand-300"
               value={item}
               onChange={(event) => updateItem(index, event.target.value)}
               placeholder="Add a thoughtful idea"
@@ -68,11 +78,23 @@ export default function WishlistForm() {
           </label>
         ))}
       </div>
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <span className={`text-xs ${isConfirmed ? 'text-emerald-400' : 'text-slate-400'}`}>
-          {isConfirmed ? 'Latest wishlist saved.' : 'No saved wishlist yet.'}
+      <div className="flex flex-col items-center gap-3 pt-2">
+        <span className={`text-sm font-medium flex items-center justify-center gap-2 ${isConfirmed ? 'text-success' : 'text-muted-700'}`}>
+          {isConfirmed ? (
+            <>
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-success/20 text-success">✓</span>
+              Latest wishlist saved.
+            </>
+          ) : (
+            <>
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-gray-200 text-gray-500">📝</span>
+              No saved wishlist yet.
+            </>
+          )}
         </span>
-        <Button type="submit">Save wishlist</Button>
+        <Button type="submit">
+          Save wishlist
+        </Button>
       </div>
     </form>
   );

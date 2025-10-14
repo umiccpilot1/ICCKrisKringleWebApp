@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kris Kringle Gift Exchange - Project Structure</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .structure-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .file-tree {
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .tree-node {
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .tree-node::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 15px;
+            height: 100%;
+            border-left: 2px solid #ddd;
+        }
+
+        .tree-node::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 15px;
+            height: 2px;
+            background: #ddd;
+        }
+
+        .tree-node:last-child::before {
+            height: 50%;
+        }
+
+        .tree-node:only-child::before {
+            display: none;
+        }
+
+        .tree-node:only-child::after {
+            width: 10px;
+        }
+
+        .tree-content {
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border-radius: 4px;
+            margin: 2px 0;
+        }
+
+        .tree-content:hover {
+            background-color: #f8f9fa;
+        }
+
+        .tree-content.expanded {
+            background-color: #e3f2fd;
+            font-weight: bold;
+        }
+
+        .tree-content.file {
+            color: #1976d2;
+        }
+
+        .tree-content.file::before {
+            content: '📄 ';
+            margin-right: 5px;
+        }
+
+        .tree-content.folder {
+            color: #388e3c;
+            font-weight: 500;
+        }
+
+        .tree-content.folder::before {
+            content: '📁 ';
+            margin-right: 5px;
+        }
+
+        .tree-content.folder.expanded::before {
+            content: '📂 ';
+        }
+
+        .tree-children {
+            display: none;
+            margin-left: 20px;
+        }
+
+        .tree-children.expanded {
+            display: block;
+        }
+
+        .stats {
+            background: #f8f9fa;
+            padding: 20px;
+            border-top: 1px solid #e9ecef;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .legend {
+            background: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .legend h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .legend-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 2px;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .legend-items {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎄 Kris Kringle Gift Exchange</h1>
+            <p>Complete Project Structure & Architecture Overview</p>
+        </div>
+
+        <div class="structure-container">
+            <div class="file-tree">
+                <div class="tree-node">
+                    <div class="tree-content folder" onclick="toggleNode(this)">
+                        kris-kringle-app/
+                    </div>
+                    <div class="tree-children">
+                        <!-- Root Files -->
+                        <div class="tree-node">
+                            <div class="tree-content file">README.md</div>
+                        </div>
+                        <div class="tree-node">
+                            <div class="tree-content file">test-magic-link.ps1</div>
+                        </div>
+                        <div class="tree-node">
+                            <div class="tree-content file">project-structure.txt</div>
+                        </div>
+
+                        <!-- .github Directory -->
+                        <div class="tree-node">
+                            <div class="tree-content folder" onclick="toggleNode(this)">
+                                .github/
+                            </div>
+                            <div class="tree-children">
+                                <div class="tree-node">
+                                    <div class="tree-content file">copilot-instructions.md</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Backend Directory -->
+                        <div class="tree-node">
+                            <div class="tree-content folder" onclick="toggleNode(this)">
+                                backend/
+                            </div>
+                            <div class="tree-children">
+                                <div class="tree-node">
+                                    <div class="tree-content file">package.json</div>
+                                </div>
+                                <div class="tree-node">
+                                    <div class="tree-content file">package-lock.json</div>
+                                </div>
+                                <div class="tree-node">
+                                    <div class="tree-content file">.env</div>
+                                </div>
+                                <div class="tree-node">
+                                    <div class="tree-content file">.env.example</div>
+                                </div>
+                                <div class="tree-node">
+                                    <div class="tree-content file">database.sqlite</div>
+                                </div>
+
+                                <!-- Backend src Directory -->
+                                <div class="tree-node">
+                                    <div class="tree-content folder" onclick="toggleNode(this)">
+                                        src/
+                                    </div>
+                                    <div class="tree-children">
+                                        <div class="tree-node">
+                                            <div class="tree-content file">server.js</div>
+                                        </div>
+
+                                        <!-- Config Directory -->
+                                        <div class="tree-node">
+                                            <div class="tree-content folder" onclick="toggleNode(this)">
+                                                config/
+                                            </div>
+                                            <div class="tree-children">
+                                                <div class="tree-node">
+                                                    <div class="tree-content file">database.js</div>
+                                                </div>
+                                                <div class="tree-node">
+                                                    <div class="tree-content file">email.js</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Middleware Directory -->
+                                        <div class="tree-node">
+                                            <div class="tree-content folder" onclick="toggleNode(this)">
+                                                middleware/
+                                            </div>
+                                            <div class="tree-children">
+                                                <div class="tree-node">
+                                                    <div class="tree-content file">auth.js</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Routes Directory -->
+                                        <div class="tree-node">
+                                            <div class="tree-content folder" onclick="toggleNode(this)">
+                                                routes/
+                                            </div>
+                                            <div class="tree-children">
+                                                <div class="tree-node">
+                                                    <div class="tree-content file">auth.routes.js</div>
+                                                </div>
+                                                <div class="tree-node">
+                                                    <div class="tree-content file">admin.routes.js</div>
+                                                </div>
+                                                <div class="tree-node">
+                                                    <div class="tree-content file">employee.routes.js</div>
+                                                </div>
+                                                <div class="tree-node">
+                                                    <div class="tree-content file">wishlist.routes.js</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Services Directory -->
+                                        <div class="tree-node">
+                                            <div class="tree-content folder" onclick="toggleNode(this)">
+                                                services/
+                                            </div>
+                                            <div class="tree-children">
+                                                <div class="tree-node">
+                                                    <div class="tree-content file">emailService.js</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Utils Directory -->
+                                        <div class="tree-node">
+                                            <div class="tree-content folder" onclick="toggleNode(this)">
+                                                utils/
+                                            </div>
+                                            <div class="tree-children">
+                                                <div class="tree-node">
+                                                    <div class="tree-content file">tokenGenerator.js</div>
+                                                </div>
+                                                <div class="tree-node">
+                                                    <div class="tree-content file">validators.js</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Backend node_modules (collapsed) -->
+                                <div class="tree-node">
+                                    <div class="tree-content folder" onclick="toggleNode(this)">
+                                        node_modules/ [~200 packages]
+                                    </div>
+                                    <div class="tree-children">
+                                        <div class="tree-node">
+                                            <div class="tree-content file">... (dependencies)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Frontend Directory -->
+                        <div class="tree-node">
+                            <div class="tree-content folder" onclick="toggleNode(this)">
+                                frontend/
+                            </div>
+                            <div class="tree-children">
+                                <div class="tree-node">
+                                    <div class="tree-content file">package.json</div>
+                                </div>
+                                <div class="tree-node">
+                                    <div class="tree-content file">package-lock.json</div>
+                                </div>
+                                <div class="tree-node">
+                                    <div class="tree-content file">vite.config.js</div>
+                                </div>
+                                <div class="tree-node">
+                                    <div class="tree-content file">postcss.config.js</div>
+                                </div>
+                                <div class="tree-node">
+                                    <div class="tree-content file">tailwind.config.js</div>
+                                </div>
+                                <div class="tree-node">
+                                    <div class="tree-content file">index.html</div>
+                                </div>
+
+                                <!-- Frontend src Directory -->
+                                <div class="tree-node">
+                                    <div class="tree-content folder" onclick="toggleNode(this)">
+                                        src/
+                                    </div>
+                                    <div class="tree-children">
+                                        <div class="tree-node">
+                                            <div class="tree-content file">main.jsx</div>
+                                        </div>
+                                        <div class="tree-node">
+                                            <div class="tree-content file">App.jsx</div>
+                                        </div>
+                                        <div class="tree-node">
+                                            <div class="tree-content file">index.css</div>
+                                        </div>
+
+                                        <!-- Components Directory -->
+                                        <div class="tree-node">
+                                            <div class="tree-content folder" onclick="toggleNode(this)">
+                                                components/
+                                            </div>
+                                            <div class="tree-children">
+                                                <!-- Common Components -->
+                                                <div class="tree-node">
+                                                    <div class="tree-content folder" onclick="toggleNode(this)">
+                                                        common/
+                                                    </div>
+                                                    <div class="tree-children">
+                                                        <div class="tree-node">
+                                                            <div class="tree-content file">Button.jsx</div>
+                                                        </div>
+                                                        <div class="tree-node">
+                                                            <div class="tree-content file">ToastContainer.jsx</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Layout Components -->
+                                                <div class="tree-node">
+                                                    <div class="tree-content folder" onclick="toggleNode(this)">
+                                                        layout/
+                                                    </div>
+                                                    <div class="tree-children">
+                                                        <div class="tree-node">
+                                                            <div class="tree-content file">Layout.jsx</div>
+                                                        </div>
+                                                        <div class="tree-node">
+                                                            <div class="tree-content file">Header.jsx</div>
+                                                        </div>
+                                                        <div class="tree-node">
+                                                            <div class="tree-content file">Footer.jsx</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Employee Components -->
+                                                <div class="tree-node">
+                                                    <div class="tree-content folder" onclick="toggleNode(this)">
+                                                        employee/
+                                                    </div>
+                                                    <div class="tree-children">
+                                                        <div class="tree-node">
+                                                            <div class="tree-content file">EmployeeDashboard.jsx</div>
+                                                        </div>
+                                                        <div class="tree-node">
+                                                            <div class="tree-content file">RecipientCard.jsx</div>
+                                                        </div>
+                                                        <div class="tree-node">
+                                                            <div class="tree-content file">WishlistForm.jsx</div>
+                                                        </div>
+                                                        <div class="tree-node">
+                                                            <div class="tree-content file">WishlistSettings.jsx</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Admin Components -->
+                                                <div class="tree-node">
+                                                    <div class="tree-content folder" onclick="toggleNode(this)">
+                                                        admin/
+                                                    </div>
+                                                    <div class="tree-children">
+                                                        <div class="tree-node">
+                                                            <div class="tree-content file">AdminPanel.jsx</div>
+                                                        </div>
+                                                        <div class="tree-node">
+                                                            <div class="tree-content file">AllWishlistsView.jsx</div>
+                                                        </div>
+                                                        <div class="tree-node">
+                                                            <div class="tree-content file">AssignmentList.jsx</div>
+                                                        </div>
+                                                        <div class="tree-node">
+                                                            <div class="tree-content file">EmployeeUpload.jsx</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Context Directory -->
+                                        <div class="tree-node">
+                                            <div class="tree-content folder" onclick="toggleNode(this)">
+                                                context/
+                                            </div>
+                                            <div class="tree-children">
+                                                <div class="tree-node">
+                                                    <div class="tree-content file">AuthContext.jsx</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Pages Directory -->
+                                        <div class="tree-node">
+                                            <div class="tree-content folder" onclick="toggleNode(this)">
+                                                pages/
+                                            </div>
+                                            <div class="tree-children">
+                                                <div class="tree-node">
+                                                    <div class="tree-content file">Login.jsx</div>
+                                                </div>
+                                                <div class="tree-node">
+                                                    <div class="tree-content file">MagicLinkSent.jsx</div>
+                                                </div>
+                                                <div class="tree-node">
+                                                    <div class="tree-content file">AuthCallback.jsx</div>
+                                                </div>
+                                                <div class="tree-node">
+                                                    <div class="tree-content file">ConfirmWishlist.jsx</div>
+                                                </div>
+                                                <div class="tree-node">
+                                                    <div class="tree-content file">NotFound.jsx</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Services Directory -->
+                                        <div class="tree-node">
+                                            <div class="tree-content folder" onclick="toggleNode(this)">
+                                                services/
+                                            </div>
+                                            <div class="tree-children">
+                                                <div class="tree-node">
+                                                    <div class="tree-content file">api.js</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Utils Directory -->
+                                        <div class="tree-node">
+                                            <div class="tree-content folder" onclick="toggleNode(this)">
+                                                utils/
+                                            </div>
+                                            <div class="tree-children">
+                                                <div class="tree-node">
+                                                    <div class="tree-content file">constants.js</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Frontend node_modules (collapsed) -->
+                                <div class="tree-node">
+                                    <div class="tree-content folder" onclick="toggleNode(this)">
+                                        node_modules/ [~150 packages]
+                                    </div>
+                                    <div class="tree-children">
+                                        <div class="tree-node">
+                                            <div class="tree-content file">... (dependencies)</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Scripts Directory -->
+                        <div class="tree-node">
+                            <div class="tree-content folder" onclick="toggleNode(this)">
+                                scripts/
+                            </div>
+                            <div class="tree-children">
+                                <div class="tree-node">
+                                    <div class="tree-content file">restart-services.ps1</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Section -->
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">Main Applications</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">~350</div>
+                    <div class="stat-label">Total Files</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">React Components</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">4</div>
+                    <div class="stat-label">Database Tables</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">API Endpoints</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3000/5173</div>
+                    <div class="stat-label">Service Ports</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend">
+            <h3>📋 Project Legend</h3>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #388e3c;"></div>
+                    <span>Folders/Directories</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #1976d2;"></div>
+                    <span>Source Files (.js, .jsx, .json)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #f57c00;"></div>
+                    <span>Configuration Files</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background: #7b1fa2;"></div>
+                    <span>Scripts (.ps1, .md)</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Generated on October 14, 2025 • Kris Kringle Gift Exchange Web Application</p>
+        </div>
+    </div>
+
+    <script>
+        function toggleNode(element) {
+            const parent = element.parentElement;
+            const children = parent.querySelector('.tree-children');
+
+            if (children) {
+                const isExpanded = children.classList.contains('expanded');
+                element.classList.toggle('expanded', !isExpanded);
+                children.classList.toggle('expanded', !isExpanded);
+            }
+        }
+
+        // Expand root level by default
+        document.addEventListener('DOMContentLoaded', function() {
+            const rootFolder = document.querySelector('.tree-content.folder');
+            if (rootFolder) {
+                toggleNode(rootFolder);
+            }
+        });
+    </script>
+</body>
+</html>
