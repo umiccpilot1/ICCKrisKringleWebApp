@@ -3,35 +3,41 @@ export default {
   theme: {
     extend: {
       colors: {
-        'icc-blue': {
-          DEFAULT: '#1E3A8A',
-          light: '#3B82F6',
-          dark: '#1E40AF'
+        // Infosoft brand colors
+        'infosoft-red': {
+          50: '#FEF2F2',
+          100: '#FEE2E2',
+          200: '#FECACA',
+          300: '#FCA5A5',
+          400: '#F87171',
+          500: '#FF0000',  // Primary Infosoft Red
+          600: '#DC0000',
+          700: '#B91C1C',
+          800: '#991B1B',
+          900: '#7F1D1D'
         },
-        'icc-orange': {
-          DEFAULT: '#F97316',
-          light: '#FB923C',
-          dark: '#EA580C'
+        'infosoft-maroon': {
+          DEFAULT: '#8B0000',
+          light: '#A52A2A',
+          dark: '#5C0000'
         },
-        'icc-gray': {
-          50: '#F9FAFB',
-          100: '#F3F4F6',
-          200: '#E5E7EB',
-          600: '#4B5563',
-          800: '#1F2937',
-          900: '#111827'
+        'infosoft-cyan': {
+          DEFAULT: '#06B6D4',
+          light: '#22D3EE',
+          dark: '#0891B2'
         },
+        // Map brand to Infosoft red for backward compatibility
         brand: {
-          50: '#EFF6FF',
-          100: '#DBEAFE',
-          200: '#BFDBFE',
-          300: '#93C5FD',
-          400: '#60A5FA',
-          500: '#3B82F6',
-          600: '#2563EB',
-          700: '#1D4ED8',
-          800: '#1E40AF',
-          900: '#1E3A8A'
+          50: '#FEF2F2',
+          100: '#FEE2E2',
+          200: '#FECACA',
+          300: '#FCA5A5',
+          400: '#F87171',
+          500: '#FF0000',
+          600: '#DC0000',
+          700: '#B91C1C',
+          800: '#991B1B',
+          900: '#7F1D1D'
         },
         muted: {
           100: '#F3F4F6',
@@ -42,18 +48,22 @@ export default {
           600: '#4B5563',
           700: '#374151',
           800: '#1F2937'
-        }
+        },
+        success: '#10B981',
+        accent: '#DC0000'
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Inter', 'system-ui', 'sans-serif']
+        sans: ['Poppins', 'system-ui', 'sans-serif'],
+        display: ['Poppins', 'system-ui', 'sans-serif']
       },
       boxShadow: {
-        card: '0 12px 40px rgba(15, 23, 42, 0.08)',
-        lift: '0 20px 45px rgba(30, 58, 138, 0.18)'
+        card: '0 12px 40px rgba(0, 0, 0, 0.08)',
+        lift: '0 20px 45px rgba(255, 0, 0, 0.18)',
+        soft: '0 4px 12px rgba(0, 0, 0, 0.05)'
       },
       backgroundImage: {
-        'hero-gradient': 'linear-gradient(135deg, rgba(30, 58, 138, 0.95), rgba(30, 64, 175, 0.9))'
+        'hero-gradient': 'linear-gradient(135deg, #FF0000, #8B0000)',
+        'infosoft-gradient': 'linear-gradient(135deg, #FF0000 0%, #DC0000 50%, #8B0000 100%)'
       },
       animation: {
         'fade-in': 'fadeIn 1s ease-in-out',

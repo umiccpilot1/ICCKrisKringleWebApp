@@ -1,3 +1,5 @@
+import LinkPreviewTooltip from '../common/LinkPreviewTooltip.jsx';
+
 export default function RecipientCard({ recipient }) {
   if (!recipient) {
     return (
@@ -21,39 +23,90 @@ export default function RecipientCard({ recipient }) {
         <p className="text-xs uppercase tracking-wide text-accent font-semibold">Keep it secret until reveal day</p>
       </div>
       
-      <div className="space-y-3 text-sm">
-        <div className="flex items-start justify-center gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
-          <div>
-            <span className="font-medium text-muted-700 text-xs uppercase tracking-wider">Name</span>
-            <p className="text-gray-900 font-semibold">{recipient.name}</p>
+      {/* Hidden until hover - Name and Email in one container */}
+      <div className="group relative">
+        <div className="space-y-3 text-sm p-6 rounded-lg bg-gradient-to-br from-gray-100 to-gray-50 border-2 border-dashed border-gray-300 cursor-pointer hover:border-brand-500 hover:shadow-lg transition-all duration-300">
+          {/* Blur overlay - hidden on hover */}
+          <div className="absolute inset-0 backdrop-blur-lg bg-white/60 rounded-lg flex flex-col items-center justify-center gap-3 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none z-10">
+            <img 
+              src="/images/infosoft-logo.png" 
+              alt="Infosoft Consulting Corporation" 
+              className="w-40 h-auto mb-2"
+              onError={(e) => {
+                e.target.style.display = 'none';
+                e.target.nextElementSibling.style.display = 'block';
+              }}
+            />
+            <div className="text-4xl hidden">🎭</div>
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-brand-500 to-red-600 blur-xl opacity-50 animate-pulse"></div>
+              <p className="relative text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-brand-600 via-red-500 to-brand-700 animate-pulse tracking-wide uppercase">
+                Hover to reveal
+              </p>
+            </div>
+            <p className="text-xs text-gray-600 font-semibold uppercase tracking-wider px-4 py-1.5 bg-yellow-100 border-2 border-yellow-400 rounded-full shadow-lg">
+              ⚠️ Secret Santa Assignment
+            </p>
+          </div>
+          
+          {/* Actual content - revealed on hover */}
+          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="flex items-start justify-center gap-3 p-3 rounded-lg bg-white">
+              <div>
+                <span className="font-medium text-muted-700 text-xs uppercase tracking-wider">Name</span>
+                <p className="text-gray-900 font-semibold text-lg">{recipient.name}</p>
+              </div>
+            </div>
+            
+            <div className="flex items-start justify-center gap-3 p-3 rounded-lg bg-white mt-2">
+              <div>
+                <span className="font-medium text-muted-700 text-xs uppercase tracking-wider">Email</span>
+                <p className="text-gray-900 font-medium">{recipient.email}</p>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
         
-        <div className="flex items-start justify-center gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
-          <div>
-            <span className="font-medium text-muted-700 text-xs uppercase tracking-wider">Email</span>
-            <p className="text-gray-900 font-medium">{recipient.email}</p>
-          </div>
-        </div>
-        
-        <div className="flex items-start justify-center gap-3 p-4 rounded-lg bg-gradient-to-br from-brand-50 to-brand-100 border border-brand-500/20">
-          <div className="flex-1 max-w-sm mx-auto">
+      <div className="flex items-start justify-center gap-3 p-4 rounded-lg bg-gradient-to-br from-brand-50 to-brand-100 border border-brand-500/20">
+        <div className="flex-1 max-w-sm mx-auto">
             <span className="font-medium text-brand-600 text-xs uppercase tracking-wider">Wishlist</span>
             {recipient.wishlist?.length ? (
-              <ul className="mt-2 space-y-2">
-                {recipient.wishlist.map((item, idx) => (
-                  <li key={idx} className="flex items-start justify-center gap-2 text-gray-900">
-                    <span className="text-brand-500 mt-0.5">•</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
+              <ul className="mt-3 space-y-3">
+                {recipient.wishlist.map((item, idx) => {
+                  // Handle both legacy (string) and new (object) formats
+                  const description = typeof item === 'string' ? item : item.description;
+                  const link = typeof item === 'object' ? item.link : null;
+
+                  return (
+                    <li key={idx} className="flex items-start gap-2 text-gray-900">
+                      <span className="text-brand-500 mt-0.5 font-bold">{idx + 1}.</span>
+                      <div className="flex-1 space-y-1.5">
+                        <span className="block text-sm">{description}</span>
+                        {link && (
+                          <LinkPreviewTooltip url={link} description={description}>
+                            <a
+                              href={link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 bg-white border border-brand-500/30 text-brand-600 rounded-lg hover:bg-brand-50 hover:border-brand-500 transition-all font-medium shadow-sm hover:shadow"
+                            >
+                              <span>🔗</span>
+                              <span>View Online</span>
+                              <span className="text-[10px]">↗</span>
+                            </a>
+                          </LinkPreviewTooltip>
+                        )}
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             ) : (
               <p className="mt-2 text-muted-700 italic flex items-center gap-2">
                 No wishlist provided yet.
               </p>
             )}
-          </div>
         </div>
       </div>
     </div>

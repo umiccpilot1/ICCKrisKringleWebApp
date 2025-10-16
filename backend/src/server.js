@@ -11,6 +11,7 @@ const authRoutes = require('./routes/auth.routes');
 const adminRoutes = require('./routes/admin.routes');
 const employeeRoutes = require('./routes/employee.routes');
 const wishlistRoutes = require('./routes/wishlist.routes');
+const previewRoutes = require('./routes/preview.routes');
 
 initializeDatabase();
 
@@ -29,6 +30,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/admin', authMiddleware, adminRoutes);
 app.use('/api/employee', employeeRoutes);
 app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/preview', previewRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   const frontendPath = path.join(__dirname, '../../frontend/dist');

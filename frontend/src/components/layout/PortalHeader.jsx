@@ -37,7 +37,7 @@ export default function PortalHeader() {
               <button
                 type="button"
                 onClick={logout}
-                className="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-icc-blue rounded-lg shadow-md hover:shadow-lg transition-smooth hover:-translate-y-0.5"
+                className="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-gray-900 rounded-lg shadow-md hover:shadow-lg hover:bg-black transition-smooth hover:-translate-y-0.5"
               >
                 Logout
               </button>

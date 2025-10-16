@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
   const { items } = req.body;
   if (!validateWishlistItems(items)) {
-    return res.status(400).json({ message: 'Wishlist must have 1-3 non-empty items under 120 chars' });
+    return res.status(400).json({ message: 'Wishlist must have 1-3 items. Each item needs a description (max 120 chars) and optional link (valid URL)' });
   }
 
   const existing = db.prepare('SELECT id FROM wishlists WHERE employee_id = ?').get(req.user.id);
