@@ -3,6 +3,28 @@
 ## Project Overview
 Secret Santa web app with passwordless magic-link authentication. Backend (Express + SQLite) on port 3000, frontend (React + Vite) on port 5173.
 
+**Stack**: Express.js (CommonJS) + better-sqlite3 + React 18 + Vite + Tailwind CSS  
+**Node**: >=18.0.0 required  
+**Key Dependencies**: Puppeteer (link previews), nodemailer (Office 365), multer (Excel upload), XLSX (parsing)
+
+## Initial Setup
+
+### Environment Configuration
+Backend `.env` (copy from `.env.example`):
+```bash
+JWT_SECRET=<generate with: node -e "console.log(require('crypto').randomBytes(64).toString('hex'))">
+SMTP_USER=<Office 365 email>
+SMTP_PASS=<app password>
+FRONTEND_URL=http://localhost:5173  # MUST match actual frontend port
+```
+
+Frontend `.env`:
+```bash
+VITE_API_BASE_URL=http://localhost:3000/api
+```
+
+Database auto-initializes on first backend start (`database.sqlite` created in `backend/`). Check for "Database ready" + "Email server ready" logs before testing.
+
 ## Critical Architecture Decisions
 
 ### Authentication Flow
@@ -27,13 +49,23 @@ Session validation uses dual-check: JWT signature verification + `sessions` tabl
 ### Starting Services
 **Use `scripts/restart-services.ps1`** - starts both backend/frontend as background processes with proper port management. Manual start causes terminal conflicts.
 ```powershell
-cd scripts
-.\restart-services.ps1
+.\scripts\restart-services.ps1  # Run from project root
 ```
 Backend: `backend/npm run dev` (nodemon on port 3000)  
 Frontend: `frontend/npm run dev` (Vite on port 5173)
 
-Script auto-kills existing processes on ports 3000/5173 before starting fresh instances.
+Script auto-kills existing processes on ports 3000/5173 before starting fresh instances. Uses `Start-Process` with `-WindowStyle Hidden` for background execution.
+
+**Manual start** (if script fails):
+```powershell
+# Terminal 1
+cd backend
+npm run dev
+
+# Terminal 2
+cd frontend
+npm run dev
+```
 
 ### Testing Magic Link Flow
 Use `test-magic-link.ps1` in project root:
@@ -42,7 +74,10 @@ Use `test-magic-link.ps1` in project root:
 ```
 Check backend terminal for "Email server ready" before testing. Test employees seeded in DB: `charles.daitol@infosoft.com.ph` (admin), `charles.daitol+arbill@infosoft.com.ph` (employee).
 
-Node testing script also available: `node backend/scripts/testMagicLink.js <email>`
+Node testing script also available: 
+```bash
+node backend/scripts/testMagicLink.js <email>
+```
 
 ### Database Inspection Scripts
 Backend scripts for debugging (run with `node backend/scripts/<script>.js`):
@@ -54,6 +89,15 @@ Backend scripts for debugging (run with `node backend/scripts/<script>.js`):
 
 ### Environment Setup
 Backend requires **SMTP credentials** in `.env` (Office 365 defaults). Email service uses nodemailer with `requireTLS: true` and IPv4-only (`family: 4`) for stability. Transporter runs `.verify()` on startup - look for "Email server ready" log.
+
+### Excel Employee Import Format
+Admin can upload Excel files with employees via `/api/admin/employees/upload`. Expected columns (case-insensitive):
+- `name` or `Name` - Employee full name
+- `email` or `Email` - Unique email address
+- `is_admin` or `isAdmin` (optional) - Boolean for admin privileges
+- `is_super_admin` or `isSuperAdmin` (optional) - Boolean for super admin
+
+Service in `excelService.js` uses `multer` for file handling, `xlsx` for parsing. Files auto-cleaned after processing.
 
 ## Code Patterns
 
@@ -131,6 +175,23 @@ Backend fails with `EADDRINUSE:3000` → find PID: `netstat -ano | findstr :3000
 
 ### Frontend shows unstyled text
 PostCSS not processing Tailwind. Verify `frontend/postcss.config.js` exists with `tailwindcss` and `autoprefixer` plugins. Restart Vite after creating.
+
+## Production Deployment
+
+Backend serves static frontend in production mode:
+```javascript
+// backend/src/server.js
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../../frontend/dist')));
+  app.get('*', (req, res) => res.sendFile('index.html'));
+}
+```
+
+Build commands:
+```bash
+cd frontend && npm run build  # Creates frontend/dist/
+cd backend && npm start       # Serves frontend + API on single port
+```
 
 ## Key Files Reference
 - `backend/src/config/database.js`: Schema definitions, see `initializeDatabase()` for full DDL

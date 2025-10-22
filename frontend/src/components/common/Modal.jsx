@@ -26,9 +26,9 @@ export default function Modal({ open, onClose, title, children }) {
             leaveFrom="opacity-100 translate-y-0"
             leaveTo="opacity-0 translate-y-4"
           >
-            <Dialog.Panel className="w-full max-w-lg rounded-3xl border border-white/10 bg-white/5 p-6 shadow-soft backdrop-blur">
-              <Dialog.Title className="text-lg font-semibold text-white">{title}</Dialog.Title>
-              <div className="mt-4 text-sm text-slate-200">{children}</div>
+            <Dialog.Panel className="w-full max-w-lg rounded-2xl border border-gray-200 bg-white p-6 shadow-xl">
+              <Dialog.Title className="text-xl font-bold text-gray-900">{title}</Dialog.Title>
+              <div className="mt-4">{children}</div>
             </Dialog.Panel>
           </Transition.Child>
         </div>

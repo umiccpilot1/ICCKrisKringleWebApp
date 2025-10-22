@@ -4,6 +4,7 @@ import LinkPreviewTooltip from '../common/LinkPreviewTooltip.jsx';
 export default function AllWishlistsView({ wishlists }) {
   const [isVisible, setIsVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [previewsEnabled, setPreviewsEnabled] = useState(true);
 
   if (!wishlists?.length) {
     return (
@@ -23,22 +24,42 @@ export default function AllWishlistsView({ wishlists }) {
     <div className="space-y-4">
       {/* Toggle and Search Controls */}
       <div className="flex flex-col gap-4 items-center p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
-        <button
-          onClick={() => setIsVisible(!isVisible)}
-          className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-infosoft-red-500 text-white rounded-lg hover:bg-infosoft-red-600 transition-colors font-medium shadow-sm w-full sm:w-auto"
-        >
-          {isVisible ? (
-            <>
-              <span className="text-lg">🙈</span>
-              <span>Hide Wishlists</span>
-            </>
-          ) : (
-            <>
-              <span className="text-lg">📋</span>
-              <span>Show Wishlists</span>
-            </>
+        <div className="flex flex-col sm:flex-row gap-3 w-full items-center justify-between">
+          <button
+            onClick={() => setIsVisible(!isVisible)}
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-infosoft-red-500 text-white rounded-lg hover:bg-infosoft-red-600 transition-colors font-medium shadow-sm w-full sm:w-auto"
+          >
+            {isVisible ? (
+              <>
+                <span className="text-lg">🙈</span>
+                <span>Hide Wishlists</span>
+              </>
+            ) : (
+              <>
+                <span className="text-lg">📋</span>
+                <span>Show Wishlists</span>
+              </>
+            )}
+          </button>
+
+          {isVisible && (
+            <button
+              onClick={() => setPreviewsEnabled(!previewsEnabled)}
+              className={`
+                flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-semibold
+                transition-all duration-200 shadow-sm hover:shadow w-full sm:w-auto
+                ${previewsEnabled 
+                  ? 'bg-brand-500 text-white hover:bg-brand-600' 
+                  : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
+                }
+              `}
+              title={previewsEnabled ? 'Hide link previews' : 'Show link previews on hover'}
+            >
+              <span>{previewsEnabled ? '�️' : '�'}</span>
+              <span>{previewsEnabled ? 'Previews ON' : 'Previews OFF'}</span>
+            </button>
           )}
-        </button>
+        </div>
 
         {isVisible && (
           <div className="relative w-full sm:w-auto sm:min-w-[400px]">
@@ -107,7 +128,7 @@ export default function AllWishlistsView({ wishlists }) {
                                 <div className="flex-1 space-y-1.5 max-w-xs">
                                   <span className="block text-sm">{description}</span>
                                   {link && (
-                                    <LinkPreviewTooltip url={link} description={description}>
+                                    <LinkPreviewTooltip url={link} description={description} enabled={previewsEnabled}>
                                       <a
                                         href={link}
                                         target="_blank"

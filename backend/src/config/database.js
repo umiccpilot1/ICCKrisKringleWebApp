@@ -15,6 +15,7 @@ function initializeDatabase() {
             is_admin BOOLEAN DEFAULT 0,
             is_super_admin BOOLEAN DEFAULT 0,
             recipient_id INTEGER,
+            photo_filename TEXT,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (recipient_id) REFERENCES employees(id)
         );

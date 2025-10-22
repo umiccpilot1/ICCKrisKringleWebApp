@@ -72,4 +72,12 @@ export function updateSettings(payload) {
   return api.put('/admin/settings', payload);
 }
 
+export function fetchIncompleteWishlists() {
+  return api.get('/admin/wishlists/incomplete');
+}
+
+export function sendWishlistReminders() {
+  return api.post('/admin/wishlists/send-reminders');
+}
+
 export default api;

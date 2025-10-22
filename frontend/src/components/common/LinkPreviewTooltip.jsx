@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
+import PlatformBadge from './PlatformBadge';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 const tooltipCache = new Map();
 
-export default function LinkPreviewTooltip({ url, description, children }) {
+export default function LinkPreviewTooltip({ url, description, children, enabled = true }) {
   const [showTooltip, setShowTooltip] = useState(false);
   const [previewData, setPreviewData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -14,7 +15,8 @@ export default function LinkPreviewTooltip({ url, description, children }) {
   }, [url]);
 
   useEffect(() => {
-    if (!showTooltip) return;
+    // Don't fetch if previews are disabled
+    if (!enabled || !showTooltip) return;
 
     if (tooltipCache.has(url)) {
       setPreviewData(tooltipCache.get(url));
@@ -67,7 +69,7 @@ export default function LinkPreviewTooltip({ url, description, children }) {
         abortRef.current.abort();
       }
     };
-  }, [showTooltip, url]);
+  }, [showTooltip, url, enabled]);
 
   // Extract domain info
   const getDomain = (link) => {
@@ -87,12 +89,12 @@ export default function LinkPreviewTooltip({ url, description, children }) {
   return (
     <div 
       className="relative inline-block group"
-      onMouseEnter={() => setShowTooltip(true)}
-  onMouseLeave={() => setShowTooltip(false)}
+      onMouseEnter={() => enabled && setShowTooltip(true)}
+      onMouseLeave={() => setShowTooltip(false)}
     >
       {children}
       
-      {showTooltip && (
+      {enabled && showTooltip && (
         <div className="absolute z-[100] bottom-full left-1/2 -translate-x-1/2 mb-3 w-96 pointer-events-none">
           <div className="bg-white rounded-xl shadow-2xl border-2 border-gray-300 overflow-hidden transform transition-all duration-200">
             {/* Product Preview Section */}
@@ -149,32 +151,58 @@ export default function LinkPreviewTooltip({ url, description, children }) {
                       {previewData.description}
                     </p>
                   )}
-                  <div className="flex items-center gap-2 text-xs">
+                  <div className="flex items-center gap-2 text-xs mb-2">
                     <span className="text-brand-500">🔗</span>
                     <span className="text-gray-600 font-medium truncate">
                       {previewData?.domain || domainInfo.hostname}
                     </span>
                   </div>
-                  {(previewData?.isScreenshot || previewData?.cached) && (
-                    <div className="flex flex-wrap items-center gap-2 mt-2 text-[10px] uppercase tracking-wide">
-                      {previewData?.isScreenshot && (
-                        <span className="bg-amber-100 text-amber-700 px-2 py-1 rounded-full font-semibold">
-                          Live Screenshot
-                        </span>
-                      )}
-                      {previewData?.cached && (
-                        <span className="bg-slate-100 text-slate-600 px-2 py-1 rounded-full font-semibold">
-                          Cached
-                        </span>
-                      )}
-                    </div>
-                  )}
+                  
+                  {/* Platform Badge and Status Badges */}
+                  <div className="flex flex-wrap items-center gap-2 text-[10px] uppercase tracking-wide">
+                    {previewData?.platform && previewData.platform !== 'unknown' && (
+                      <PlatformBadge platform={previewData.platform} size="sm" />
+                    )}
+                    {previewData?.isScreenshot && (
+                      <span className="bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-semibold">
+                        Live Screenshot
+                      </span>
+                    )}
+                    {previewData?.cached && (
+                      <span className="bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-semibold">
+                        Cached
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
               
+              {/* Go to Site Button */}
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="
+                  block w-full text-center py-2.5 px-4 mb-3
+                  bg-gradient-to-r from-brand-500 to-brand-600 
+                  hover:from-brand-600 hover:to-brand-700
+                  text-white font-semibold text-sm rounded-lg
+                  transition-all duration-200 shadow-md hover:shadow-lg
+                  pointer-events-auto
+                "
+                onClick={(e) => e.stopPropagation()}
+              >
+                <span className="flex items-center justify-center gap-2">
+                  <span>Go to Site</span>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </span>
+              </a>
+              
               <div className="pt-3 border-t border-gray-200">
                 <p className="text-xs text-gray-500 italic text-center">
-                  💡 Click "View Online" to see full product details
+                  💡 Hover for preview • Click button to visit site
                 </p>
               </div>
             </div>

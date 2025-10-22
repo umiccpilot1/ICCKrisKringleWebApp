@@ -1,5 +1,7 @@
 const { db } = require('../config/database');
 const emailService = require('./emailService');
+const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 
 function shuffle(array) {
   const copy = [...array];
@@ -49,9 +51,22 @@ class AssignmentService {
     `).all();
 
     for (const row of rows) {
+      // Generate a 48-hour multi-use magic link token
+      const token = crypto.randomBytes(32).toString('hex');
+      const hashedToken = await bcrypt.hash(token, 10);
+      const expiresAt = new Date(Date.now() + 48 * 60 * 60 * 1000); // 48 hours
+
+      // Insert magic link into database
+      db.prepare(`
+        INSERT INTO magic_links (employee_id, token, expires_at, used)
+        VALUES (?, ?, ?, 0)
+      `).run(row.giverId, hashedToken, expiresAt.toISOString());
+
+      // Send email with magic link token
       await emailService.sendAssignmentEmail(
         { id: row.giverId, name: row.giverName, email: row.giverEmail },
-        { name: row.recipientName, email: row.recipientEmail }
+        { name: row.recipientName, email: row.recipientEmail },
+        token // Pass the plain token for the email link
       );
     }
   }

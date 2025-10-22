@@ -13,6 +13,7 @@ export default function AuthCallback() {
   const query = useQuery();
   const token = query.get('token');
   const email = query.get('email');
+  const reminder = query.get('reminder');
   const navigate = useNavigate();
   const { setUser } = useAuth();
   const hasHandled = useRef(false);
@@ -39,15 +40,21 @@ export default function AuthCallback() {
           isAdmin: data.employee.isAdmin,
           isSuperAdmin: data.employee.isSuperAdmin
         });
-  toast.success('Welcome back!');
-  navigate('/portal');
+        
+        if (reminder === 'wishlist') {
+          toast.success('Please complete your wishlist below');
+          navigate('/portal?showWishlist=true');
+        } else {
+          toast.success('Welcome back!');
+          navigate('/portal');
+        }
       } catch (error) {
         toast.error(error.response?.data?.message || 'Unable to sign in');
         navigate('/login');
       }
     }
     completeLogin();
-  }, [token, email, navigate, setUser]);
+  }, [token, email, reminder, navigate, setUser]);
 
   return (
     <div className="flex items-center justify-center">

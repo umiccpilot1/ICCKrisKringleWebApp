@@ -9,16 +9,11 @@ export default function PortalHeader() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <Link to="/portal" className="flex items-center space-x-3 group">
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-icc-blue to-icc-blue-light rounded-lg blur opacity-75 group-hover:opacity-100 transition-opacity" />
-              <div className="relative flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-r from-icc-blue to-icc-blue-light text-white text-lg font-bold shadow-lg">
-                🎁
-              </div>
-            </div>
-            <div className="hidden sm:block">
-              <div className="text-xs font-semibold text-icc-gray-600 uppercase tracking-wider">Kris Kringle</div>
-              <div className="text-sm font-bold text-icc-gray-900">Gift Exchange Hub</div>
-            </div>
+            <img 
+              src="/images/infosoft-logo.png" 
+              alt="Infosoft Consulting Corporation" 
+              className="h-10 w-auto transition-transform group-hover:scale-105"
+            />
           </Link>
 
           {user ? (

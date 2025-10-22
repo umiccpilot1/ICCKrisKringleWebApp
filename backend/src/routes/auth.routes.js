@@ -18,6 +18,10 @@ router.post('/magic-link', async (req, res) => {
     return res.status(404).json({ message: 'Employee not found' });
   }
 
+  // Invalidate any existing unused magic links for this employee
+  db.prepare('UPDATE magic_links SET used = 1 WHERE employee_id = ? AND used = 0')
+    .run(employee.id);
+
   const { token, expiresAt } = generateMagicLinkToken();
   const hashedToken = await bcrypt.hash(token, 10);
 
@@ -39,25 +43,31 @@ router.post('/callback', async (req, res) => {
     return res.status(404).json({ message: 'Employee not found' });
   }
 
-  const magicLink = db.prepare('SELECT id, token, expires_at, used FROM magic_links WHERE employee_id = ? ORDER BY created_at DESC').get(employee.id);
-  if (!magicLink) {
-    return res.status(400).json({ message: 'Magic link not found' });
-  }
-
-  if (magicLink.used) {
-    return res.status(400).json({ message: 'Magic link already used' });
-  }
-
-  if (new Date(magicLink.expires_at) < new Date()) {
+  // Get ALL valid (unused, non-expired) magic links for this employee
+  const magicLinks = db.prepare(
+    'SELECT id, token, expires_at, used FROM magic_links WHERE employee_id = ? AND used = 0 AND datetime(expires_at) > datetime(\'now\') ORDER BY created_at DESC'
+  ).all(employee.id);
+  
+  if (!magicLinks || magicLinks.length === 0) {
     return res.status(400).json({ message: 'Magic link expired' });
   }
 
-  const isMatch = await bcrypt.compare(token, magicLink.token);
-  if (!isMatch) {
+  // Try to match the token against any of the valid magic links
+  let matchedLink = null;
+  for (const link of magicLinks) {
+    const isMatch = await bcrypt.compare(token, link.token);
+    if (isMatch) {
+      matchedLink = link;
+      break;
+    }
+  }
+
+  if (!matchedLink) {
     return res.status(400).json({ message: 'Invalid magic link token' });
   }
 
-  db.prepare('UPDATE magic_links SET used = 1 WHERE id = ?').run(magicLink.id);
+  // Mark the matched link as used
+  db.prepare('UPDATE magic_links SET used = 1 WHERE id = ?').run(matchedLink.id);
 
   const sessionToken = generateJWT({ id: employee.id, email: employee.email, isAdmin: employee.is_admin });
   const sessionExpiryDays = parseInt(process.env.SESSION_EXPIRY_DAYS || '7', 10);

@@ -16,7 +16,7 @@ router.get('/me', (req, res) => {
 
 router.get('/recipient', (req, res) => {
   const recipient = db.prepare(`
-    SELECT r.id, r.name, r.email, w.items
+    SELECT r.id, r.name, r.email, r.photo_filename, w.items
     FROM employees e
     LEFT JOIN employees r ON e.recipient_id = r.id
     LEFT JOIN wishlists w ON w.employee_id = r.id AND w.is_confirmed = 1
@@ -32,6 +32,7 @@ router.get('/recipient', (req, res) => {
       id: recipient.id,
       name: recipient.name,
       email: recipient.email,
+      photoFilename: recipient.photo_filename,
       wishlist: recipient.items ? JSON.parse(recipient.items) : []
     }
   });
