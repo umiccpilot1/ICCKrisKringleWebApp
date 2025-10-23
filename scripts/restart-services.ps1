@@ -47,7 +47,7 @@ $services = @(
     [pscustomobject]@{
         Name = 'backend'
         WorkingDirectory = Join-Path $projectRoot 'backend'
-        Port = 3000
+    Port = 3060
         Command = @('run', 'dev')
     },
     [pscustomobject]@{

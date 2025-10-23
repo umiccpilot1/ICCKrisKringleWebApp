@@ -13,9 +13,28 @@ class ExcelService {
     const rows = xlsx.utils.sheet_to_json(worksheet);
 
     const employees = rows.map((row, index) => {
-      const name = row.Name || row.name;
-      const email = row.Email || row.email;
-      const isAdmin = row.Admin === 'Yes' || row.is_admin === true || row.is_admin === 1;
+      const normalisedKeys = Object.fromEntries(
+        Object.entries(row).map(([key, value]) => [String(key).trim().toLowerCase(), value])
+      );
+
+      const name =
+        row.Name ||
+        row.name ||
+        row.Employee ||
+        row.employee ||
+        normalisedKeys.name ||
+        normalisedKeys.employee;
+      const email = row.Email || row.email || normalisedKeys.email;
+      const adminValueRaw =
+        row.Admin ??
+        row.admin ??
+        row.is_admin ??
+        normalisedKeys.admin ??
+        normalisedKeys.is_admin ??
+        normalisedKeys['admin (yes/no)'];
+      const adminValue =
+        typeof adminValueRaw === 'string' ? adminValueRaw.trim().toLowerCase() : adminValueRaw;
+      const isAdmin = adminValue === 'yes' || adminValue === true || adminValue === 1;
 
       if (!name || !email) {
         throw new Error(`Row ${index + 2}: missing name or email`);

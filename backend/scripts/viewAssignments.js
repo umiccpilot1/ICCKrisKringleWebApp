@@ -1,6 +1,6 @@
-const { db } = require('../src/config/database');
+﻿const { db } = require('../src/config/database');
 
-console.log('\n🎁 Kris Kringle Assignments:\n');
+console.log('\nðŸŽ Kris Kringle Assignments:\n');
 
 const assignments = db.prepare(`
   SELECT
@@ -19,9 +19,9 @@ if (assignments.every(a => !a.recipient)) {
 } else {
   assignments.forEach(a => {
     if (a.recipient) {
-      console.log(`${a.giver} (ID: ${a.giver_id}) → ${a.recipient} (ID: ${a.recipient_id})`);
+      console.log(`${a.giver} (ID: ${a.giver_id}) â†’ ${a.recipient} (ID: ${a.recipient_id})`);
     } else {
-      console.log(`${a.giver} (ID: ${a.giver_id}) → Not assigned yet`);
+      console.log(`${a.giver} (ID: ${a.giver_id}) â†’ Not assigned yet`);
     }
   });
   console.log('');

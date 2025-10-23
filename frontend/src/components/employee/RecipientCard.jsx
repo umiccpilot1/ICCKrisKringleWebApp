@@ -1,10 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import LinkPreviewTooltip from '../common/LinkPreviewTooltip.jsx';
 import InitialsAvatar from '../common/InitialsAvatar.jsx';
+import { buildEmployeePhotoUrl } from '../../utils/helpers.js';
 
 export default function RecipientCard({ recipient, enlarged = false, isWishlistConfirmed = false }) {
   const [photoError, setPhotoError] = useState(false);
   const [previewsEnabled, setPreviewsEnabled] = useState(true);
+
+  useEffect(() => {
+    setPhotoError(false);
+  }, [recipient?.photoFilename]);
   
   if (!recipient) {
     return (
@@ -39,9 +44,12 @@ export default function RecipientCard({ recipient, enlarged = false, isWishlistC
   }
 
   return (
-    <div className={`mt-6 space-y-5 rounded-lg border border-brand-500/20 bg-gradient-to-br from-brand-50 to-white px-6 text-sm shadow-card text-center ${
+    <div
+      data-testid="recipient-card"
+      className={`mt-6 space-y-5 rounded-lg border border-brand-500/20 bg-gradient-to-br from-brand-50 to-white px-6 text-sm shadow-card text-center ${
       enlarged ? 'py-10' : 'py-7'
-    }`}>
+    }`}
+    >
       <div className="flex flex-col items-center gap-2">
         <h2 className={`font-bold text-gray-900 flex items-center justify-center gap-2 ${
           enlarged ? 'text-2xl' : 'text-lg'
@@ -65,7 +73,10 @@ export default function RecipientCard({ recipient, enlarged = false, isWishlistC
           enlarged ? 'p-10' : 'p-6'
         }`}>
           {/* Blur overlay - hidden on hover */}
-          <div className="absolute inset-0 backdrop-blur-lg bg-white/60 rounded-lg flex flex-col items-center justify-center gap-3 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none z-10">
+          <div
+            data-testid="recipient-photo-overlay"
+            className="absolute inset-0 backdrop-blur-lg bg-white/60 rounded-lg flex flex-col items-center justify-center gap-3 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none z-10"
+          >
             <img 
               src="/images/infosoft-logo.png" 
               alt="Infosoft Consulting Corporation" 
@@ -97,13 +108,18 @@ export default function RecipientCard({ recipient, enlarged = false, isWishlistC
             <div className="flex justify-center mb-4">
               {recipient.photoFilename && !photoError ? (
                 <img 
-                  src={`/images/employees/${recipient.photoFilename}`}
+                  data-testid="recipient-photo"
+                  src={buildEmployeePhotoUrl(recipient.photoFilename)}
                   alt={recipient.name}
                   className="w-[300px] h-[300px] rounded-full object-cover border-4 border-white shadow-lg"
                   onError={() => setPhotoError(true)}
                 />
               ) : (
-                <InitialsAvatar name={recipient.name} size={300} />
+                <InitialsAvatar
+                  data-testid="recipient-photo-fallback"
+                  name={recipient.name}
+                  size={300}
+                />
               )}
             </div>
             

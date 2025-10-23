@@ -1,4 +1,4 @@
-const Database = require('better-sqlite3');
+﻿const Database = require('better-sqlite3');
 const path = require('path');
 
 const dbPath = process.env.DATABASE_PATH || path.join(__dirname, '../database.sqlite');
@@ -12,9 +12,9 @@ try {
   if (!hasPhotoColumn) {
     console.log('Adding photo_filename column to employees table...');
     db.exec(`ALTER TABLE employees ADD COLUMN photo_filename TEXT;`);
-    console.log('✓ Successfully added photo_filename column');
+    console.log('âœ“ Successfully added photo_filename column');
   } else {
-    console.log('✓ photo_filename column already exists');
+    console.log('âœ“ photo_filename column already exists');
   }
   
   db.close();

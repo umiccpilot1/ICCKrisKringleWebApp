@@ -1,4 +1,4 @@
-// Test script to inspect what's actually available on a Shopee page
+﻿// Test script to inspect what's actually available on a Shopee page
 
 const puppeteer = require('puppeteer');
 

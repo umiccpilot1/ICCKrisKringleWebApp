@@ -1,4 +1,4 @@
-const axios = require('axios');
+﻿const axios = require('axios');
 
 const token = process.argv[2];
 const items = process.argv.slice(3);
@@ -8,7 +8,7 @@ if (!token) {
 }
 
 axios.post(
-  'http://localhost:3000/api/wishlist',
+  'http://localhost:3060/api/wishlist',
   { items: items.length ? items : ['Test Item'] },
   { headers: { Authorization: `Bearer ${token}` } }
 ).then((res) => {

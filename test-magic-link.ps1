@@ -1,4 +1,4 @@
-$testEmail = "charles.daitol@infosoft.com.ph"
+﻿$testEmail = "charles.daitol@infosoft.com.ph"
 $body = @{ email = $testEmail } | ConvertTo-Json
 
 Write-Host ""
@@ -6,7 +6,7 @@ Write-Host "=== Testing Magic Link Flow ===" -ForegroundColor Cyan
 Write-Host "Test email: $testEmail" -ForegroundColor Yellow
 
 try {
-    $response = Invoke-RestMethod -Uri "http://localhost:3000/api/auth/magic-link" `
+    $response = Invoke-RestMethod -Uri "http://localhost:3060/api/auth/magic-link" `
         -Method POST `
         -ContentType "application/json" `
         -Body $body

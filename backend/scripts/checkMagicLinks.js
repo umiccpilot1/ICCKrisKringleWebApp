@@ -1,4 +1,4 @@
-const { db } = require('../src/config/database');
+﻿const { db } = require('../src/config/database');
 
 console.log('\n=== Recent Magic Links ===\n');
 const links = db.prepare(`

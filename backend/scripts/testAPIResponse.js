@@ -1,4 +1,4 @@
-// Quick test to verify platform badge response from backend
+﻿// Quick test to verify platform badge response from backend
 
 const testUrl = 'https://shopee.ph/iPhoneCase-For11-13-15-16Camera-Protection-Shockproof-Dalawang-Lilang-May-Maliliit-na-Butil-7-8PLUS-i.1423983018.25296280253';
 
@@ -8,7 +8,7 @@ async function testPreviewAPI() {
 
   try {
     const response = await fetch(
-      `http://localhost:3000/api/preview/link-preview?url=${encodeURIComponent(testUrl)}`
+      `http://localhost:3060/api/preview/link-preview?url=${encodeURIComponent(testUrl)}`
     );
 
     if (!response.ok) {
@@ -17,7 +17,7 @@ async function testPreviewAPI() {
 
     const data = await response.json();
     
-    console.log('✅ Response received!\n');
+    console.log('âœ… Response received!\n');
     console.log('Platform:', data.platform);
     console.log('Domain:', data.domain);
     console.log('Title:', data.title);
@@ -26,16 +26,16 @@ async function testPreviewAPI() {
     console.log('Cached:', data.cached);
     
     if (data.isScreenshot) {
-      console.log('\n📸 Screenshot fallback active (as expected due to bot detection)');
+      console.log('\nðŸ“¸ Screenshot fallback active (as expected due to bot detection)');
     }
     
     if (data.platform && data.platform !== 'unknown') {
-      console.log(`\n🏷️  Platform badge will show: ${data.platform.toUpperCase()}`);
+      console.log(`\nðŸ·ï¸  Platform badge will show: ${data.platform.toUpperCase()}`);
     }
     
-    console.log('\n✅ All checks passed!');
+    console.log('\nâœ… All checks passed!');
   } catch (error) {
-    console.error('\n❌ Error:', error.message);
+    console.error('\nâŒ Error:', error.message);
   }
 }
 

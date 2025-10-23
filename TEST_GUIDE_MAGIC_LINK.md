@@ -1,14 +1,14 @@
-# Step-by-Step Test Guide for Magic Link Fix
+﻿# Step-by-Step Test Guide for Magic Link Fix
 
-## ✅ Current Status
-- Backend running on: http://localhost:3000
+## âœ… Current Status
+- Backend running on: http://localhost:3060
 - Frontend running on: http://localhost:5173
 - Database: Ready with test employees
 - Email server: Configured (Office 365 SMTP)
 
 ---
 
-## 🧪 Test Procedure
+## ðŸ§ª Test Procedure
 
 ### Option 1: Full End-to-End Test (Recommended)
 
@@ -34,11 +34,11 @@
 **Step 4: Click Magic Link**
 1. Click "Confirm Wishlist" button in email
 2. **Expected Results**:
-   - ✅ Page redirects to `http://localhost:5173/portal?showWishlist=true`
-   - ✅ Shows toast: "Please complete your wishlist below"
-   - ✅ Wishlist form is automatically expanded
-   - ✅ NO "Magic link expired" error
-   - ✅ NO "Invalid magic link token" error
+   - âœ… Page redirects to `http://localhost:5173/portal?showWishlist=true`
+   - âœ… Shows toast: "Please complete your wishlist below"
+   - âœ… Wishlist form is automatically expanded
+   - âœ… NO "Magic link expired" error
+   - âœ… NO "Invalid magic link token" error
 
 **Step 5: Verify Wishlist Form**
 1. Wishlist section should be visible
@@ -82,18 +82,18 @@ node -e "const {db} = require('./src/config/database'); db.prepare('DELETE FROM 
 **Step 2: Test API Endpoint**
 ```powershell
 # Note: This will fail auth, but shows endpoint is accessible
-Invoke-WebRequest -Uri http://localhost:3000/api/admin/wishlists/incomplete -UseBasicParsing
+Invoke-WebRequest -Uri http://localhost:3060/api/admin/wishlists/incomplete -UseBasicParsing
 ```
 
 **Step 3: Run Complete Flow Test**
 ```powershell
 node scripts/testCompleteReminderFlow.js
 ```
-Expected: All steps show ✅, no errors
+Expected: All steps show âœ…, no errors
 
 ---
 
-## 🔍 Troubleshooting Guide
+## ðŸ” Troubleshooting Guide
 
 ### Issue: "Magic link expired"
 **Diagnosis:**
@@ -139,7 +139,7 @@ cd scripts
 
 ---
 
-## 📊 Verification Checklist
+## ðŸ“Š Verification Checklist
 
 After testing, verify:
 
@@ -154,24 +154,24 @@ After testing, verify:
 
 ---
 
-## 🎯 Expected Behavior Summary
+## ðŸŽ¯ Expected Behavior Summary
 
 ### Before Fix:
-- ❌ Multiple valid magic links per employee
-- ❌ Auth only checked most recent link
-- ❌ Clicking older email links failed
-- ❌ Error: "Magic link expired" (even when valid)
+- âŒ Multiple valid magic links per employee
+- âŒ Auth only checked most recent link
+- âŒ Clicking older email links failed
+- âŒ Error: "Magic link expired" (even when valid)
 
 ### After Fix:
-- ✅ Only one valid magic link per employee
-- ✅ Auth checks ALL valid links
-- ✅ Any recent valid link works
-- ✅ Old links auto-invalidated on new creation
-- ✅ Clear, accurate error messages
+- âœ… Only one valid magic link per employee
+- âœ… Auth checks ALL valid links
+- âœ… Any recent valid link works
+- âœ… Old links auto-invalidated on new creation
+- âœ… Clear, accurate error messages
 
 ---
 
-## 📝 Notes
+## ðŸ“ Notes
 
 1. **Token Format**: 
    - Email URL: 64-character hex string
@@ -191,7 +191,7 @@ After testing, verify:
 
 ---
 
-## 🚀 Ready to Test!
+## ðŸš€ Ready to Test!
 
 1. Make sure both backend and frontend are running
 2. Choose one of the test options above
@@ -202,5 +202,5 @@ After testing, verify:
 ---
 
 *Last Updated: 2025-10-22*
-*Backend Status: ✅ Running on port 3000*
-*Frontend Status: ✅ Running on port 5173*
+*Backend Status: âœ… Running on port 3000*
+*Frontend Status: âœ… Running on port 5173*

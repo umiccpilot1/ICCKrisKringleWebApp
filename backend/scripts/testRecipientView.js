@@ -1,4 +1,4 @@
-const axios = require('axios');
+﻿const axios = require('axios');
 
 const token = process.argv[2];
 
@@ -6,16 +6,16 @@ if (!token) {
   throw new Error('Usage: node testRecipientView.js <token>');
 }
 
-console.log('\n🎁 Testing Recipient Wishlist View (Backward Compatibility)...\n');
+console.log('\nðŸŽ Testing Recipient Wishlist View (Backward Compatibility)...\n');
 
-axios.get('http://localhost:3000/api/employee/recipient', {
+axios.get('http://localhost:3060/api/employee/recipient', {
   headers: { Authorization: `Bearer ${token}` }
 })
   .then(res => {
     const { recipient } = res.data;
 
     if (!recipient) {
-      console.log('❌ No recipient assigned yet.\n');
+      console.log('âŒ No recipient assigned yet.\n');
       return;
     }
 
@@ -31,7 +31,7 @@ axios.get('http://localhost:3000/api/employee/recipient', {
         } else if (typeof item === 'object' && item.description) {
           console.log(`  ${idx + 1}. ${item.description} (new format - object)`);
           if (item.link) {
-            console.log(`     🔗 ${item.link}`);
+            console.log(`     ðŸ”— ${item.link}`);
           }
         }
       });
@@ -39,8 +39,8 @@ axios.get('http://localhost:3000/api/employee/recipient', {
       console.log('No wishlist yet.');
     }
 
-    console.log('\n✅ Successfully fetched and displayed recipient wishlist!\n');
+    console.log('\nâœ… Successfully fetched and displayed recipient wishlist!\n');
   })
   .catch(err => {
-    console.error('❌ Error:', err.response?.data || err.message);
+    console.error('âŒ Error:', err.response?.data || err.message);
   });

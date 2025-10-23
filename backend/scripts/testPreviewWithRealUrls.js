@@ -1,6 +1,6 @@
-const axios = require('axios');
+﻿const axios = require('axios');
 
-const API_BASE = 'http://localhost:3000/api';
+const API_BASE = 'http://localhost:3060/api';
 
 const testUrls = {
   shopee: 'https://shopee.ph/iPhoneCase-For11-13-15-16Camera-Protection-Shockproof-Dalawang-Lilang-May-Maliliit-na-Butil-7-8PLUS-i.1423983018.25296280253',
@@ -23,7 +23,7 @@ async function testPreviewEndpoint() {
       });
       const endTime = Date.now();
       
-      console.log(`✅ Request completed in ${((endTime - startTime) / 1000).toFixed(2)}s`);
+      console.log(`âœ… Request completed in ${((endTime - startTime) / 1000).toFixed(2)}s`);
       console.log(`Response status: ${response.status}`);
       console.log('\nData received:');
       console.log(`  Image: ${response.data.image ? (response.data.isScreenshot ? 'Screenshot (base64)' : response.data.image.substring(0, 60) + '...') : 'NULL'}`);
@@ -34,15 +34,15 @@ async function testPreviewEndpoint() {
       console.log(`  Cached: ${response.data.cached}`);
       
       if (!response.data.image) {
-        console.log('⚠️ WARNING: No image found!');
+        console.log('âš ï¸ WARNING: No image found!');
       } else if (response.data.isScreenshot) {
-        console.log('⚠️ WARNING: Fell back to screenshot (no product image extracted)');
+        console.log('âš ï¸ WARNING: Fell back to screenshot (no product image extracted)');
       } else {
-        console.log('✅ SUCCESS: Product image extracted!');
+        console.log('âœ… SUCCESS: Product image extracted!');
       }
       
     } catch (error) {
-      console.log(`❌ ERROR: ${error.message}`);
+      console.log(`âŒ ERROR: ${error.message}`);
       if (error.response) {
         console.log(`   Status: ${error.response.status}`);
         console.log(`   Data:`, error.response.data);

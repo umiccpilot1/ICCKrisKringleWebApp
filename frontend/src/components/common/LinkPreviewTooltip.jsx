@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import PlatformBadge from './PlatformBadge';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3060';
 const tooltipCache = new Map();
 
 export default function LinkPreviewTooltip({ url, description, children, enabled = true }) {

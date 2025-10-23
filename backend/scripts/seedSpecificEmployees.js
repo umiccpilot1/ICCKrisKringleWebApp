@@ -1,4 +1,4 @@
-const Database = require('better-sqlite3');
+﻿const Database = require('better-sqlite3');
 
 const employees = [
   { name: 'Charles Daitol', email: 'charles.daitol@infosoft.com.ph', is_admin: 1, is_super_admin: 1 },

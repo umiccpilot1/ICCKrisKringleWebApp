@@ -1,4 +1,4 @@
-const { db } = require('../src/config/database');
+﻿const { db } = require('../src/config/database');
 
 console.log('\n=== Time Analysis ===\n');
 console.log('JavaScript Date.now():', new Date().toISOString());
@@ -30,9 +30,9 @@ console.table(recentLink);
 
 console.log('\n=== Problem Diagnosis ===');
 if (recentLink.hours_until_expiry < 0) {
-  console.log('❌ Token has EXPIRED');
+  console.log('âŒ Token has EXPIRED');
   console.log(`   Expired ${Math.abs(recentLink.hours_until_expiry).toFixed(2)} hours ago`);
 } else {
-  console.log('✅ Token is still VALID');
+  console.log('âœ… Token is still VALID');
   console.log(`   Expires in ${recentLink.hours_until_expiry.toFixed(2)} hours`);
 }

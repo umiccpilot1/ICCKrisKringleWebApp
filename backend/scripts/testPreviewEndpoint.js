@@ -1,4 +1,4 @@
-const axios = require('axios');
+﻿const axios = require('axios');
 const cheerio = require('cheerio');
 const { fetchLinkPreview } = require('../src/services/linkPreviewService');
 
@@ -30,7 +30,7 @@ async function testDirectScraping() {
     const html = response.data;
     const $ = cheerio.load(html);
     
-    console.log('✓ Successfully fetched HTML');
+    console.log('âœ“ Successfully fetched HTML');
     console.log('HTML length:', html.length, 'characters');
     
     // Look for meta tags
@@ -40,10 +40,10 @@ async function testDirectScraping() {
     const title = $('title').text();
     
     console.log('\nMeta tags found:');
-    console.log('  og:image:', ogImage || '❌ NOT FOUND');
-    console.log('  og:title:', ogTitle || '❌ NOT FOUND');
-    console.log('  twitter:image:', twitterImage || '❌ NOT FOUND');
-    console.log('  <title>:', title || '❌ NOT FOUND');
+    console.log('  og:image:', ogImage || 'âŒ NOT FOUND');
+    console.log('  og:title:', ogTitle || 'âŒ NOT FOUND');
+    console.log('  twitter:image:', twitterImage || 'âŒ NOT FOUND');
+    console.log('  <title>:', title || 'âŒ NOT FOUND');
     
     // Check for data in script tags (Shopee likely uses JSON-LD or embedded data)
     const jsonLdScripts = $('script[type="application/ld+json"]');
@@ -55,10 +55,10 @@ async function testDirectScraping() {
           const data = JSON.parse($(elem).html());
           console.log(`\nJSON-LD #${i + 1}:`, JSON.stringify(data, null, 2).substring(0, 500));
           if (data.image) {
-            console.log('  ✓ Image found in JSON-LD:', data.image);
+            console.log('  âœ“ Image found in JSON-LD:', data.image);
           }
         } catch (e) {
-          console.log(`  ❌ Failed to parse JSON-LD #${i + 1}`);
+          console.log(`  âŒ Failed to parse JSON-LD #${i + 1}`);
         }
       });
     }
@@ -72,7 +72,7 @@ async function testDirectScraping() {
       const content = $(elem).html();
       if (content && content.includes('"image"') && content.includes('http')) {
         if (!foundImageInScript) {
-          console.log('\n✓ Found image data in script tag:');
+          console.log('\nâœ“ Found image data in script tag:');
           foundImageInScript = true;
         }
         // Try to extract image URL
@@ -84,11 +84,11 @@ async function testDirectScraping() {
     });
     
     if (!foundImageInScript) {
-      console.log('❌ No image data found in any script tag');
+      console.log('âŒ No image data found in any script tag');
     }
     
   } catch (error) {
-    console.error('❌ Direct scraping failed:', error.message);
+    console.error('âŒ Direct scraping failed:', error.message);
   }
 }
 
@@ -99,18 +99,18 @@ async function testService() {
 
   try {
     const preview = await fetchLinkPreview(testUrl);
-    console.log('✓ Service returned a response');
+    console.log('âœ“ Service returned a response');
     console.log('\nPreview data:');
     console.log(JSON.stringify(preview, null, 2));
 
     if (preview.image) {
-      console.log('\n✅ SUCCESS! Image acquired.');
+      console.log('\nâœ… SUCCESS! Image acquired.');
       console.log('Image type:', preview.image.startsWith('data:image') ? 'Inlined screenshot' : 'Remote URL');
     } else {
-      console.log('\n❌ FAILED: No image in preview response');
+      console.log('\nâŒ FAILED: No image in preview response');
     }
   } catch (error) {
-    console.error('❌ Service test failed:', error.message);
+    console.error('âŒ Service test failed:', error.message);
     if (error.stack) {
       console.error(error.stack);
     }

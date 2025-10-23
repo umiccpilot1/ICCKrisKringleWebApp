@@ -1,4 +1,4 @@
-export default function InitialsAvatar({ name, size = 150 }) {
+export default function InitialsAvatar({ name, size = 150, ...props }) {
   // Extract initials from name
   const getInitials = (fullName) => {
     if (!fullName) return '?';
@@ -41,6 +41,7 @@ export default function InitialsAvatar({ name, size = 150 }) {
 
   return (
     <div
+      {...props}
       className="flex items-center justify-center rounded-full font-bold text-white shadow-lg"
       style={{
         width: `${size}px`,

@@ -1,4 +1,4 @@
-const { db } = require('../src/config/database');
+﻿const { db } = require('../src/config/database');
 const bcrypt = require('bcrypt');
 const { generateSecureToken } = require('../src/utils/tokenGenerator');
 
@@ -30,8 +30,8 @@ async function testTokenFlow() {
   
   // Step 3: Test if we can compare
   console.log('Step 3: Testing bcrypt comparison');
-  console.log('  ❌ Problem: We CANNOT test the plain token because we only have the hash!');
-  console.log('  ❌ The email was sent, but we didn\'t log the plain token anywhere');
+  console.log('  âŒ Problem: We CANNOT test the plain token because we only have the hash!');
+  console.log('  âŒ The email was sent, but we didn\'t log the plain token anywhere');
   console.log();
   
   // Step 4: Demonstrate the correct flow
@@ -47,12 +47,12 @@ async function testTokenFlow() {
   
   // Simulate validation
   const isValid = await bcrypt.compare(plainToken, hashedToken);
-  console.log('  bcrypt.compare(plainToken, hashedToken):', isValid ? '✅ MATCH' : '❌ NO MATCH');
+  console.log('  bcrypt.compare(plainToken, hashedToken):', isValid ? 'âœ… MATCH' : 'âŒ NO MATCH');
   
   // Test with wrong token
   const wrongToken = generateSecureToken();
   const isWrong = await bcrypt.compare(wrongToken, hashedToken);
-  console.log('  bcrypt.compare(wrongToken, hashedToken):', isWrong ? '✅ MATCH' : '❌ NO MATCH (expected)');
+  console.log('  bcrypt.compare(wrongToken, hashedToken):', isWrong ? 'âœ… MATCH' : 'âŒ NO MATCH (expected)');
   console.log();
   
   // Step 5: Check what backend validation does
@@ -60,9 +60,9 @@ async function testTokenFlow() {
   console.log('  1. Frontend sends: { token: "plain64chartoken", email: "..." }');
   console.log('  2. Backend finds magic_link by employee_id');
   console.log('  3. Backend does: bcrypt.compare(plainToken, hashedTokenFromDB)');
-  console.log('  4. If match: ✅ Success');
-  console.log('  5. If no match: ❌ "Invalid magic link token"');
-  console.log('  6. If expired: ❌ "Magic link expired"');
+  console.log('  4. If match: âœ… Success');
+  console.log('  5. If no match: âŒ "Invalid magic link token"');
+  console.log('  6. If expired: âŒ "Magic link expired"');
   console.log();
   
   // Step 6: Diagnosis
@@ -86,10 +86,10 @@ async function testTokenFlow() {
   `).all();
   
   if (duplicates.length > 0) {
-    console.log('  ⚠️ Found employees with multiple valid magic links:');
+    console.log('  âš ï¸ Found employees with multiple valid magic links:');
     console.table(duplicates);
   } else {
-    console.log('  ✅ No duplicate magic links found');
+    console.log('  âœ… No duplicate magic links found');
   }
 }
 

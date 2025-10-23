@@ -1,4 +1,4 @@
-const emailService = require('../src/services/emailService');
+﻿const emailService = require('../src/services/emailService');
 
 async function testAssignmentEmail() {
   const giver = {
@@ -17,14 +17,14 @@ async function testAssignmentEmail() {
   try {
     console.log('Sending test assignment email...');
     await emailService.sendAssignmentEmail(giver, recipient, magicLinkToken);
-    console.log('✅ Assignment email sent successfully!');
+    console.log('âœ… Assignment email sent successfully!');
     console.log(`\nEmail details:`);
     console.log(`To: ${giver.email}`);
-    console.log(`Subject: 🎄 Your INFOSOFT Kris Kringle Assignment 🎅`);
+    console.log(`Subject: ðŸŽ„ Your INFOSOFT Kris Kringle Assignment ðŸŽ…`);
     console.log(`Recipient: ${recipient.name}`);
     console.log(`Magic Link Token: ${magicLinkToken}`);
   } catch (error) {
-    console.error('❌ Error sending email:', error.message);
+    console.error('âŒ Error sending email:', error.message);
   }
 }
 

@@ -1,8 +1,8 @@
-const axios = require('axios');
+﻿const axios = require('axios');
 const { db } = require('../src/config/database');
 const bcrypt = require('bcrypt');
 
-const API_BASE = 'http://localhost:3000/api';
+const API_BASE = 'http://localhost:3060/api';
 
 async function testCompleteFlow() {
   console.log('\n=== COMPLETE REMINDER EMAIL FLOW TEST ===\n');
@@ -19,16 +19,16 @@ async function testCompleteFlow() {
     `).get();
     
     if (!employee) {
-      console.log('❌ No employees without wishlists found. Creating test scenario...');
+      console.log('âŒ No employees without wishlists found. Creating test scenario...');
       // Delete a wishlist to create test data
       const empWithWishlist = db.prepare('SELECT employee_id FROM wishlists LIMIT 1').get();
       if (empWithWishlist) {
         db.prepare('DELETE FROM wishlists WHERE employee_id = ?').run(empWithWishlist.employee_id);
         const testEmp = db.prepare('SELECT * FROM employees WHERE id = ?').get(empWithWishlist.employee_id);
-        console.log(`✅ Created test scenario with: ${testEmp.name} (${testEmp.email})`);
+        console.log(`âœ… Created test scenario with: ${testEmp.name} (${testEmp.email})`);
       }
     } else {
-      console.log(`✅ Found: ${employee.name} (${employee.email})`);
+      console.log(`âœ… Found: ${employee.name} (${employee.email})`);
     }
     
     // Step 2: Call the send reminders API
@@ -39,7 +39,7 @@ async function testCompleteFlow() {
       }
     }).catch(err => {
       // Expected to fail due to auth, but let's call directly
-      console.log('⚠️ API requires auth, calling backend function directly instead...');
+      console.log('âš ï¸ API requires auth, calling backend function directly instead...');
       return null;
     });
     
@@ -56,11 +56,11 @@ async function testCompleteFlow() {
     `).get();
     
     if (!magicLink) {
-      console.log('❌ No valid magic link found in database');
+      console.log('âŒ No valid magic link found in database');
       return;
     }
     
-    console.log(`✅ Magic link created for: ${magicLink.name} (${magicLink.email})`);
+    console.log(`âœ… Magic link created for: ${magicLink.name} (${magicLink.email})`);
     console.log(`   Token (hashed): ${magicLink.token.substring(0, 30)}...`);
     console.log(`   Expires: ${magicLink.expires_at}`);
     
@@ -79,7 +79,7 @@ async function testCompleteFlow() {
     console.log(`   Hashed version: ${testHash.substring(0, 30)}...`);
     
     const isValid = await bcrypt.compare(testToken, testHash);
-    console.log(`   bcrypt.compare(plainToken, hashedToken): ${isValid ? '✅ WORKS' : '❌ FAILED'}`);
+    console.log(`   bcrypt.compare(plainToken, hashedToken): ${isValid ? 'âœ… WORKS' : 'âŒ FAILED'}`);
     
     // Step 6: Verify the auth.routes.js changes
     console.log('\nStep 6: Verifying auth route improvements...');
@@ -92,15 +92,15 @@ async function testCompleteFlow() {
     `).get(magicLink.employee_id);
     
     console.log(`   Valid links for employee: ${validLinks.count}`);
-    console.log(`   ✅ Auth route now checks ALL valid links (not just most recent)`);
+    console.log(`   âœ… Auth route now checks ALL valid links (not just most recent)`);
     
     // Summary
     console.log('\n=== TEST SUMMARY ===\n');
-    console.log('✅ Backend stores bcrypt-hashed tokens');
-    console.log('✅ Email contains plain token (64-char hex)');
-    console.log('✅ Auth validation checks all valid magic links');
-    console.log('✅ Old magic links are invalidated when new ones are created');
-    console.log('\n💡 TO COMPLETE TEST:');
+    console.log('âœ… Backend stores bcrypt-hashed tokens');
+    console.log('âœ… Email contains plain token (64-char hex)');
+    console.log('âœ… Auth validation checks all valid magic links');
+    console.log('âœ… Old magic links are invalidated when new ones are created');
+    console.log('\nðŸ’¡ TO COMPLETE TEST:');
     console.log('   1. Send a reminder email from the admin panel');
     console.log('   2. Check your email inbox');
     console.log('   3. Click the "Confirm Wishlist" button');
@@ -108,7 +108,7 @@ async function testCompleteFlow() {
     console.log('   5. Should see success toast');
     
   } catch (error) {
-    console.error('\n❌ Test failed:', error.message);
+    console.error('\nâŒ Test failed:', error.message);
     if (error.response) {
       console.error('   Response:', error.response.data);
     }

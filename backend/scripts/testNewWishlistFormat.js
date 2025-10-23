@@ -1,4 +1,4 @@
-const axios = require('axios');
+﻿const axios = require('axios');
 
 const token = process.argv[2];
 
@@ -21,12 +21,12 @@ const wishlistItems = [
   }
 ];
 
-console.log('\n🧪 Testing New Wishlist Format with Descriptions and Links...\n');
+console.log('\nðŸ§ª Testing New Wishlist Format with Descriptions and Links...\n');
 console.log('Items to save:');
 wishlistItems.forEach((item, idx) => {
   console.log(`  ${idx + 1}. ${item.description}`);
   if (item.link) {
-    console.log(`     🔗 ${item.link}`);
+    console.log(`     ðŸ”— ${item.link}`);
   } else {
     console.log(`     (no link)`);
   }
@@ -34,33 +34,33 @@ wishlistItems.forEach((item, idx) => {
 console.log('');
 
 axios.post(
-  'http://localhost:3000/api/wishlist',
+  'http://localhost:3060/api/wishlist',
   { items: wishlistItems },
   { headers: { Authorization: `Bearer ${token}` } }
 ).then((res) => {
-  console.log('✅ Success:', res.data);
-  console.log('\n📋 Now fetching the saved wishlist...\n');
+  console.log('âœ… Success:', res.data);
+  console.log('\nðŸ“‹ Now fetching the saved wishlist...\n');
 
   return axios.get(
-    'http://localhost:3000/api/wishlist',
+    'http://localhost:3060/api/wishlist',
     { headers: { Authorization: `Bearer ${token}` } }
   );
 }).then((res) => {
-  console.log('✅ Fetched wishlist:');
+  console.log('âœ… Fetched wishlist:');
   if (res.data.wishlist && res.data.wishlist.items) {
     res.data.wishlist.items.forEach((item, idx) => {
       console.log(`  ${idx + 1}. ${item.description}`);
       if (item.link) {
-        console.log(`     🔗 ${item.link}`);
+        console.log(`     ðŸ”— ${item.link}`);
       }
     });
-    console.log(`\n✓ Is Confirmed: ${res.data.wishlist.isConfirmed}`);
+    console.log(`\nâœ“ Is Confirmed: ${res.data.wishlist.isConfirmed}`);
   }
-  console.log('\n✨ Test completed successfully!\n');
+  console.log('\nâœ¨ Test completed successfully!\n');
 }).catch((error) => {
   if (error.response) {
-    console.error('❌ Error response:', error.response.status, error.response.data);
+    console.error('âŒ Error response:', error.response.status, error.response.data);
   } else {
-    console.error('❌ Request failed:', error.message);
+    console.error('âŒ Request failed:', error.message);
   }
 });

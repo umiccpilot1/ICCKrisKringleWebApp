@@ -1,4 +1,4 @@
-require('dotenv').config();
+﻿require('dotenv').config();
 const emailService = require('../src/services/emailService');
 
 async function test() {
@@ -9,9 +9,9 @@ async function test() {
       'Charles Daitol',
       'test-token-123'
     );
-    console.log('✓ Email sent successfully!');
+    console.log('âœ“ Email sent successfully!');
   } catch (error) {
-    console.error('✗ Email failed:', error.message);
+    console.error('âœ— Email failed:', error.message);
     console.error('Full error:', error);
   }
 }

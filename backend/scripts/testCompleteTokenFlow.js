@@ -1,4 +1,4 @@
-const { db } = require('../src/config/database');
+﻿const { db } = require('../src/config/database');
 const bcrypt = require('bcrypt');
 const { generateSecureToken } = require('../src/utils/tokenGenerator');
 
@@ -18,7 +18,7 @@ async function testCompleteFlow() {
   // Invalidate old links
   db.prepare('UPDATE magic_links SET used = 1 WHERE employee_id = ? AND used = 0')
     .run(employee.id);
-  console.log('  ✅ Invalidated old unused magic links');
+  console.log('  âœ… Invalidated old unused magic links');
   
   const plainToken = generateSecureToken();
   console.log('  Generated plain token:', plainToken);
@@ -31,7 +31,7 @@ async function testCompleteFlow() {
   const insertResult = db.prepare(
     "INSERT INTO magic_links (employee_id, token, expires_at) VALUES (?, ?, datetime('now', '+4 hours'))"
   ).run(employee.id, hashedToken);
-  console.log('  ✅ Inserted magic link with ID:', insertResult.lastInsertRowid);
+  console.log('  âœ… Inserted magic link with ID:', insertResult.lastInsertRowid);
   console.log();
   
   // Step 3: Simulate email being sent
@@ -41,7 +41,7 @@ async function testCompleteFlow() {
   console.log('  ', emailUrl.substring(0, 100) + '...');
   console.log();
   
-  // Step 4: Simulate user clicking link (Frontend → Backend callback)
+  // Step 4: Simulate user clicking link (Frontend â†’ Backend callback)
   console.log('Step 4: User Clicks Link (Auth Callback Simulation)');
   console.log('  Frontend extracts from URL:');
   console.log('    token:', plainToken.substring(0, 20) + '...');
@@ -64,7 +64,7 @@ async function testCompleteFlow() {
   let matchedLink = null;
   for (const link of magicLinks) {
     const isMatch = await bcrypt.compare(plainToken, link.token);
-    console.log(`  Checking link ID ${link.id}:`, isMatch ? '✅ MATCH!' : '❌ No match');
+    console.log(`  Checking link ID ${link.id}:`, isMatch ? 'âœ… MATCH!' : 'âŒ No match');
     if (isMatch) {
       matchedLink = link;
       break;
@@ -73,13 +73,13 @@ async function testCompleteFlow() {
   
   console.log();
   if (matchedLink) {
-    console.log('  ✅ SUCCESS! Token validated');
+    console.log('  âœ… SUCCESS! Token validated');
     console.log('  Marking link as used...');
     db.prepare('UPDATE magic_links SET used = 1 WHERE id = ?').run(matchedLink.id);
-    console.log('  ✅ Link marked as used');
+    console.log('  âœ… Link marked as used');
     console.log('  Would now create JWT session and redirect to /portal?showWishlist=true');
   } else {
-    console.log('  ❌ FAILED! No matching magic link found');
+    console.log('  âŒ FAILED! No matching magic link found');
   }
   console.log();
   
@@ -90,9 +90,9 @@ async function testCompleteFlow() {
   ).all(employee.id);
   
   if (reusedLinks.length === 0) {
-    console.log('  ✅ No valid unused links remaining (reuse prevented)');
+    console.log('  âœ… No valid unused links remaining (reuse prevented)');
   } else {
-    console.log('  ⚠️ Still', reusedLinks.length, 'valid unused links');
+    console.log('  âš ï¸ Still', reusedLinks.length, 'valid unused links');
   }
   console.log();
   
@@ -110,7 +110,7 @@ async function testCompleteFlow() {
     tokens.push(t);
   }
   
-  console.log('  ✅ Created 3 magic links');
+  console.log('  âœ… Created 3 magic links');
   
   // Try validating with the SECOND token (not the most recent)
   const allLinks = db.prepare(
@@ -124,25 +124,25 @@ async function testCompleteFlow() {
   for (const link of allLinks) {
     const isMatch = await bcrypt.compare(tokens[1], link.token);
     if (isMatch) {
-      console.log('  ✅ MATCH! Second token validated successfully');
+      console.log('  âœ… MATCH! Second token validated successfully');
       foundMatch = true;
       break;
     }
   }
   
   if (!foundMatch) {
-    console.log('  ❌ Second token did not match any link');
+    console.log('  âŒ Second token did not match any link');
   }
   console.log();
   
   console.log('=== TEST COMPLETE ===\n');
   console.log('Summary:');
-  console.log('  ✅ Token generation works');
-  console.log('  ✅ Bcrypt hashing works');
-  console.log('  ✅ Token validation works');
-  console.log('  ✅ Multiple magic links can coexist');
-  console.log('  ✅ Any valid magic link can be used (not just most recent)');
-  console.log('  ✅ Reuse protection works');
+  console.log('  âœ… Token generation works');
+  console.log('  âœ… Bcrypt hashing works');
+  console.log('  âœ… Token validation works');
+  console.log('  âœ… Multiple magic links can coexist');
+  console.log('  âœ… Any valid magic link can be used (not just most recent)');
+  console.log('  âœ… Reuse protection works');
 }
 
 testCompleteFlow().catch(console.error);

@@ -1,6 +1,6 @@
-const { db } = require('../src/config/database');
+﻿const { db } = require('../src/config/database');
 
-console.log('\n📋 Wishlists in Database:\n');
+console.log('\nðŸ“‹ Wishlists in Database:\n');
 
 const wishlists = db.prepare(`
   SELECT
@@ -33,7 +33,7 @@ if (wishlists.length === 0) {
         } else {
           console.log(`  ${idx + 1}. ${item.description}`);
           if (item.link) {
-            console.log(`     🔗 ${item.link}`);
+            console.log(`     ðŸ”— ${item.link}`);
           }
         }
       });

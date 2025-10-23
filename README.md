@@ -35,7 +35,7 @@ cp .env.example .env
 npm install
 
 # Point the frontend to the API (default dev URL shown)
-echo "VITE_API_BASE_URL=http://localhost:3000/api" >> .env
+echo "VITE_API_BASE_URL=http://localhost:3060/api" >> .env
 ```
 
 ## Running Locally
@@ -47,7 +47,7 @@ cd scripts
 ./restart-services.ps1
 ```
 
-This PowerShell script restarts the backend (port 3000) and frontend dev server (port 5173) using the locally installed dependencies.
+This PowerShell script restarts the backend (port 3060) and frontend dev server (port 5173) using the locally installed dependencies.
 
 ### Option 2: Manual terminals
 

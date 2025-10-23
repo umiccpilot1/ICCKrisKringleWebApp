@@ -1,10 +1,10 @@
-const axios = require('axios');
+﻿const axios = require('axios');
 const { db } = require('../src/config/database');
 
 async function testReminderEmailFlow() {
   console.log('\n=== TESTING REMINDER EMAIL MAGIC LINK FLOW ===\n');
   
-  const baseURL = 'http://localhost:3000/api';
+  const baseURL = 'http://localhost:3060/api';
   const testEmail = 'charles.daitol@infosoft.com.ph';
   
   try {
@@ -24,7 +24,7 @@ async function testReminderEmailFlow() {
     // Step 2: Clear old magic links and create a fresh one
     console.log('Step 2: Setting up magic link (simulating reminder email)...');
     db.prepare('UPDATE magic_links SET used = 1 WHERE employee_id = ?').run(employee.id);
-    console.log('  ✅ Cleared old magic links');
+    console.log('  âœ… Cleared old magic links');
     
     const crypto = require('crypto');
     const bcrypt = require('bcrypt');
@@ -34,13 +34,13 @@ async function testReminderEmailFlow() {
     db.prepare(
       "INSERT INTO magic_links (employee_id, token, expires_at) VALUES (?, ?, datetime('now', '+4 hours'))"
     ).run(employee.id, hashedToken);
-    console.log('  ✅ Created new magic link');
+    console.log('  âœ… Created new magic link');
     console.log(`  Plain token: ${plainToken}`);
     console.log();
     
     // Step 3: Simulate clicking the email link (frontend callback)
     console.log('Step 3: Simulating user clicking email link...');
-    const magicLinkUrl = `http://localhost:5173/auth/callback?token=${plainToken}&email=${encodeURIComponent(testEmail)}&reminder=wishlist`;
+  const magicLinkUrl = `http://localhost:5173/auth/callback?token=${plainToken}&email=${encodeURIComponent(testEmail)}&reminder=wishlist`;
     console.log(`  Email URL: ${magicLinkUrl.substring(0, 80)}...`);
     console.log();
     
@@ -50,7 +50,7 @@ async function testReminderEmailFlow() {
       email: testEmail
     });
     
-    console.log('  ✅ Authentication successful!');
+    console.log('  âœ… Authentication successful!');
     console.log(`  JWT Token: ${authResp.data.token.substring(0, 40)}...`);
     console.log(`  Employee: ${authResp.data.employee.name}`);
     console.log(`  Email: ${authResp.data.employee.email}`);
@@ -64,9 +64,9 @@ async function testReminderEmailFlow() {
     ).get(employee.id);
     
     if (usedLink.used === 1) {
-      console.log('  ✅ Link correctly marked as used');
+      console.log('  âœ… Link correctly marked as used');
     } else {
-      console.log('  ❌ Link not marked as used!');
+      console.log('  âŒ Link not marked as used!');
     }
     console.log();
     
@@ -77,15 +77,15 @@ async function testReminderEmailFlow() {
         token: plainToken,
         email: testEmail
       });
-      console.log('  ❌ PROBLEM: Link was reusable!');
+      console.log('  âŒ PROBLEM: Link was reusable!');
     } catch (error) {
-      console.log('  ✅ Correctly rejected reused link');
+      console.log('  âœ… Correctly rejected reused link');
       console.log(`  Error message: "${error.response?.data?.message}"`);
     }
     console.log();
     
     console.log('=== TEST COMPLETE ===\n');
-    console.log('✅ All tests passed!');
+    console.log('âœ… All tests passed!');
     console.log('\nNow test with actual reminder email:');
     console.log('1. Go to Admin Panel in browser');
     console.log('2. Click "Send Reminders" button');
@@ -94,7 +94,7 @@ async function testReminderEmailFlow() {
     console.log('5. Should redirect to /portal?showWishlist=true');
     
   } catch (error) {
-    console.error('\n❌ TEST FAILED:', error.message);
+    console.error('\nâŒ TEST FAILED:', error.message);
     if (error.response) {
       console.error('Status:', error.response.status);
       console.error('Response:', error.response.data);

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Database Reset Script
  * 
  * This script will:
@@ -12,7 +12,7 @@
 const { db } = require('../src/config/database');
 
 function resetDatabase() {
-  console.log('\n🚨 DATABASE RESET SCRIPT 🚨\n');
+  console.log('\nðŸš¨ DATABASE RESET SCRIPT ðŸš¨\n');
   console.log('This will DELETE ALL DATA and start fresh.\n');
   
   try {
@@ -20,25 +20,25 @@ function resetDatabase() {
     const transaction = db.transaction(() => {
       console.log('Step 1: Deleting all employees...');
       const deletedEmployees = db.prepare('DELETE FROM employees').run();
-      console.log(`✓ Deleted ${deletedEmployees.changes} employees`);
+      console.log(`âœ“ Deleted ${deletedEmployees.changes} employees`);
 
       console.log('\nStep 2: Deleting all wishlists...');
       const deletedWishlists = db.prepare('DELETE FROM wishlists').run();
-      console.log(`✓ Deleted ${deletedWishlists.changes} wishlists`);
+      console.log(`âœ“ Deleted ${deletedWishlists.changes} wishlists`);
 
       console.log('\nStep 3: Deleting all magic links...');
       const deletedMagicLinks = db.prepare('DELETE FROM magic_links').run();
-      console.log(`✓ Deleted ${deletedMagicLinks.changes} magic links`);
+      console.log(`âœ“ Deleted ${deletedMagicLinks.changes} magic links`);
 
       console.log('\nStep 4: Deleting all sessions...');
       const deletedSessions = db.prepare('DELETE FROM sessions').run();
-      console.log(`✓ Deleted ${deletedSessions.changes} sessions`);
+      console.log(`âœ“ Deleted ${deletedSessions.changes} sessions`);
 
       console.log('\nStep 5: Resetting settings to defaults...');
       db.prepare("UPDATE settings SET value = '0' WHERE key = 'assignment_completed'").run();
       db.prepare("UPDATE settings SET value = '' WHERE key = 'wishlist_deadline'").run();
       db.prepare("UPDATE settings SET value = '0' WHERE key = 'show_all_wishlists'").run();
-      console.log('✓ Settings reset to defaults');
+      console.log('âœ“ Settings reset to defaults');
 
       console.log('\nStep 6: Seeding admin accounts...');
       console.log('(Admins are excluded from Secret Santa assignments)');
@@ -50,13 +50,13 @@ function resetDatabase() {
 
       // Admin 1: Charles (is_admin=1 excludes from assignments)
       insertAdmin.run('Charles Admin', 'charles.daitol+admin@infosoft.com.ph');
-      console.log('✓ Added: Charles Admin (charles.daitol+admin@infosoft.com.ph)');
+      console.log('âœ“ Added: Charles Admin (charles.daitol+admin@infosoft.com.ph)');
 
       // Admin 2: Jamaica (is_admin=1 excludes from assignments)
       insertAdmin.run('Jamaica Admin', 'jamaica.rodriguez+admin@infosoft.com.ph');
-      console.log('✓ Added: Jamaica Admin (jamaica.rodriguez+admin@infosoft.com.ph)');
+      console.log('âœ“ Added: Jamaica Admin (jamaica.rodriguez+admin@infosoft.com.ph)');
 
-      console.log('\n✅ Database reset completed successfully!\n');
+      console.log('\nâœ… Database reset completed successfully!\n');
     });
 
     // Execute transaction
@@ -76,23 +76,23 @@ function resetDatabase() {
     console.log(`- Wishlists: ${wishlistCount.count}`);
     console.log(`- Active sessions: ${sessionCount.count}`);
     
-    console.log('\n📋 Admin accounts ready:');
+    console.log('\nðŸ“‹ Admin accounts ready:');
     const admins = db.prepare('SELECT id, name, email FROM employees WHERE is_admin = 1').all();
     admins.forEach(admin => {
       console.log(`   - ${admin.name} (${admin.email})`);
     });
     
-  console.log('\n🎯 Next steps:');
-  console.log('   1. Upload the employee roster (.xlsx/.xls) via Admin Panel → "Upload employees".');
+  console.log('\nðŸŽ¯ Next steps:');
+  console.log('   1. Upload the employee roster (.xlsx/.xls) via Admin Panel â†’ "Upload employees".');
   console.log('      - Only non-admin employees participate in Secret Santa pairings.');
   console.log('   2. Place employee PNG photos in frontend/public/images/employees.');
-  console.log('      - Use Admin Panel → "Manage employee photos" to auto-map or manually resolve conflicts.');
-  console.log('   3. Configure wishlist deadline and visibility (Admin Panel → "Wishlist settings").');
+  console.log('      - Use Admin Panel â†’ "Manage employee photos" to auto-map or manually resolve conflicts.');
+  console.log('   3. Configure wishlist deadline and visibility (Admin Panel â†’ "Wishlist settings").');
   console.log('   4. Generate Secret Santa assignments (Admins remain excluded automatically).');
   console.log('   5. Trigger assignment emails or wishlist reminders using the notification modal.\n');
 
   } catch (error) {
-    console.error('\n❌ Error during database reset:', error.message);
+    console.error('\nâŒ Error during database reset:', error.message);
     process.exit(1);
   }
 }

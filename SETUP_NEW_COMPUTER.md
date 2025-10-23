@@ -1,4 +1,4 @@
-# Setup Guide for New Computer
+﻿# Setup Guide for New Computer
 
 Complete step-by-step instructions to get the Kris Kringle app running on a fresh computer.
 
@@ -140,7 +140,7 @@ notepad .env
 
 **Required `.env` configuration:**
 ```bash
-VITE_API_BASE_URL=http://localhost:3000/api
+VITE_API_BASE_URL=http://localhost:3060/api
 ```
 
 #### 3.3 Start Frontend
@@ -152,8 +152,8 @@ npm run dev
 ```
 VITE v5.x.x  ready in XXX ms
 
-➜  Local:   http://localhost:5173/
-➜  Network: use --host to expose
+âžœ  Local:   http://localhost:5173/
+âžœ  Network: use --host to expose
 ```
 
 ---
@@ -178,7 +178,7 @@ You should see:
 
 #### 4.3 Test Backend API
 ```powershell
-curl http://localhost:3000/api/health
+curl http://localhost:3060/api/health
 ```
 Should return: `{"status":"ok"}`
 
@@ -346,20 +346,20 @@ Backend serves both API and static frontend on port 3000.
 ### Check Logs
 - Backend: Terminal running `npm run dev` in backend folder
 - Frontend: Terminal running `npm run dev` in frontend folder
-- Browser: F12 → Console tab for frontend errors
+- Browser: F12 â†’ Console tab for frontend errors
 
 ### Common Log Messages
-✅ **Good**:
+âœ… **Good**:
 - "Server running on port 3000"
 - "Database ready"
 - "Email server ready"
 - "VITE ready in XXX ms"
 
-❌ **Bad**:
-- "Cannot find module" → Run `npm install`
-- "EADDRINUSE" → Port conflict, kill process
-- "SMTP error" → Check email credentials
-- "CORS error" → Check FRONTEND_URL matches
+âŒ **Bad**:
+- "Cannot find module" â†’ Run `npm install`
+- "EADDRINUSE" â†’ Port conflict, kill process
+- "SMTP error" â†’ Check email credentials
+- "CORS error" â†’ Check FRONTEND_URL matches
 
 ---
 
@@ -380,8 +380,8 @@ cd frontend && npm run dev
 
 ### URLs
 - Frontend: http://localhost:5173
-- Backend API: http://localhost:3000/api
-- Health Check: http://localhost:3000/api/health
+- Backend API: http://localhost:3060/api
+- Health Check: http://localhost:3060/api/health
 
 ### Default Ports
 - Backend: 3000
@@ -389,7 +389,7 @@ cd frontend && npm run dev
 
 ---
 
-**Setup Complete!** 🎉
+**Setup Complete!** ðŸŽ‰
 
 You now have a fully functional Kris Kringle app running locally.
 

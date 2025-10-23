@@ -1,4 +1,4 @@
-const Database = require('better-sqlite3');
+﻿const Database = require('better-sqlite3');
 const path = require('path');
 const fs = require('fs');
 
@@ -74,11 +74,11 @@ try {
     
     if (matchedPhoto) {
       updateStmt.run(matchedPhoto, employee.id);
-      console.log(`✓ Matched ${employee.name} → ${matchedPhoto}`);
+      console.log(`âœ“ Matched ${employee.name} â†’ ${matchedPhoto}`);
       matchedCount++;
     } else {
       unmatchedEmployees.push(employee.name);
-      console.log(`✗ No photo found for ${employee.name}`);
+      console.log(`âœ— No photo found for ${employee.name}`);
     }
   });
   

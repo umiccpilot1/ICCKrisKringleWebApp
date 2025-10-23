@@ -1,8 +1,8 @@
-const axios = require('axios');
+﻿const axios = require('axios');
 
 async function send(email) {
   try {
-    const { data } = await axios.post('http://localhost:3000/api/auth/magic-link', { email });
+  const { data } = await axios.post('http://localhost:3060/api/auth/magic-link', { email });
     console.log('Success:', data);
   } catch (error) {
     if (error.response) {

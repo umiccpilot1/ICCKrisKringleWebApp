@@ -1,4 +1,4 @@
-# Magic Link Fix - Complete Solution
+﻿# Magic Link Fix - Complete Solution
 
 ## Problem Identified
 
@@ -26,9 +26,9 @@ The "Magic link expired" error was caused by **multiple valid magic links** exis
 - Use the first matching link found
 
 **Benefits:**
-- ✅ Any valid magic link can be used (not just the most recent)
-- ✅ Handles multiple reminder emails gracefully
-- ✅ Still validates expiry and usage status
+- âœ… Any valid magic link can be used (not just the most recent)
+- âœ… Handles multiple reminder emails gracefully
+- âœ… Still validates expiry and usage status
 
 ### 2. Invalidate Old Magic Links When Creating New Ones
 
@@ -41,9 +41,9 @@ The "Magic link expired" error was caused by **multiple valid magic links** exis
 - This prevents accumulation of multiple valid links
 
 **Benefits:**
-- ✅ Prevents confusion from multiple active links
-- ✅ Cleaner database state
-- ✅ Each new request/reminder invalidates old links
+- âœ… Prevents confusion from multiple active links
+- âœ… Cleaner database state
+- âœ… Each new request/reminder invalidates old links
 
 ## Code Changes Summary
 
@@ -85,22 +85,22 @@ insertMagicLink.run(employee.id, hashedToken);
 ## Testing Performed
 
 ### Test 1: Complete Flow Simulation
-✅ Token generation (64-char hex)
-✅ Bcrypt hashing (60-char hash starting with $2b$10$)
-✅ Token validation with bcrypt.compare()
-✅ Multiple magic links coexisting
-✅ Any valid magic link can be used (not just most recent)
-✅ Reuse protection (link marked as used after authentication)
+âœ… Token generation (64-char hex)
+âœ… Bcrypt hashing (60-char hash starting with $2b$10$)
+âœ… Token validation with bcrypt.compare()
+âœ… Multiple magic links coexisting
+âœ… Any valid magic link can be used (not just most recent)
+âœ… Reuse protection (link marked as used after authentication)
 
 ### Test 2: Multiple Magic Links Scenario
-✅ Created 3 magic links for same employee
-✅ Successfully validated with the SECOND oldest token
-✅ Confirmed older links work, not just newest
+âœ… Created 3 magic links for same employee
+âœ… Successfully validated with the SECOND oldest token
+âœ… Confirmed older links work, not just newest
 
 ### Test 3: Database State Verification
-✅ Checked for duplicate valid links (found 11 employees with 2+ links each)
-✅ Verified expiry times are correctly calculated
-✅ Confirmed timezone handling (UTC in DB, local time in JavaScript)
+âœ… Checked for duplicate valid links (found 11 employees with 2+ links each)
+âœ… Verified expiry times are correctly calculated
+âœ… Confirmed timezone handling (UTC in DB, local time in JavaScript)
 
 ## How to Test the Fix
 
@@ -122,7 +122,7 @@ node scripts/debugTokenFlow.js         # Detailed diagnosis
 ### Option 3: Manual API Test
 ```bash
 # Step 1: Request magic link
-curl -X POST http://localhost:3000/api/auth/magic-link \
+curl -X POST http://localhost:3060/api/auth/magic-link \
   -H "Content-Type: application/json" \
   -d '{"email":"charles.daitol@infosoft.com.ph"}'
 
@@ -130,7 +130,7 @@ curl -X POST http://localhost:3000/api/auth/magic-link \
 node scripts/checkMagicLinks.js
 
 # Step 3: Use the token from email (you'll need to check the email)
-curl -X POST http://localhost:3000/api/auth/callback \
+curl -X POST http://localhost:3060/api/auth/callback \
   -H "Content-Type: application/json" \
   -d '{"token":"<token_from_email>","email":"charles.daitol@infosoft.com.ph"}'
 ```
@@ -138,21 +138,21 @@ curl -X POST http://localhost:3000/api/auth/callback \
 ## Expected Behavior Now
 
 ### Scenario 1: Single Magic Link
-1. User requests magic link → creates Link A
-2. User clicks Link A → ✅ Authenticates successfully
+1. User requests magic link â†’ creates Link A
+2. User clicks Link A â†’ âœ… Authenticates successfully
 3. Link A is marked as used
-4. User tries Link A again → ❌ "Magic link already used"
+4. User tries Link A again â†’ âŒ "Magic link already used"
 
 ### Scenario 2: Multiple Reminders
-1. Admin sends reminder → creates Link A
-2. Admin sends reminder again → marks Link A as used, creates Link B
-3. User clicks Link B → ✅ Authenticates successfully
+1. Admin sends reminder â†’ creates Link A
+2. Admin sends reminder again â†’ marks Link A as used, creates Link B
+3. User clicks Link B â†’ âœ… Authenticates successfully
 
 ### Scenario 3: Multiple Valid Links (before invalidation fix)
 1. Link A created
 2. Link B created (without invalidating A)
-3. User clicks Link A → ✅ Authenticates successfully (checks both A and B)
-4. User clicks Link B → ❌ "Magic link already used" (A was used, B might still be valid)
+3. User clicks Link A â†’ âœ… Authenticates successfully (checks both A and B)
+4. User clicks Link B â†’ âŒ "Magic link already used" (A was used, B might still be valid)
 
 ## Database Schema Reference
 
@@ -209,11 +209,11 @@ AND datetime(created_at) < datetime('now', '-30 days');
 
 ## Files Modified
 
-1. ✅ `backend/src/routes/auth.routes.js`
+1. âœ… `backend/src/routes/auth.routes.js`
    - Modified `/callback` endpoint to check all valid magic links
    - Added invalidation of old links in `/magic-link` endpoint
 
-2. ✅ `backend/src/routes/admin.routes.js`
+2. âœ… `backend/src/routes/admin.routes.js`
    - Added invalidation of old links in `/wishlists/send-reminders` endpoint
 
 ## Backend Restart Required
@@ -228,10 +228,10 @@ Server is now running on port 3000 with the updated authentication logic.
 
 ## Next Steps
 
-1. ✅ Backend is running with fixes applied
-2. ✅ Test by sending a reminder email from Admin Panel
-3. ✅ Click the email link and verify authentication works
-4. ✅ Check that wishlist form is displayed with toast notification
+1. âœ… Backend is running with fixes applied
+2. âœ… Test by sending a reminder email from Admin Panel
+3. âœ… Click the email link and verify authentication works
+4. âœ… Check that wishlist form is displayed with toast notification
 
 ## Success Criteria
 
@@ -244,6 +244,6 @@ Server is now running on port 3000 with the updated authentication logic.
 
 ---
 
-**Status:** ✅ **READY FOR TESTING**
+**Status:** âœ… **READY FOR TESTING**
 
 The magic link authentication issue has been fully resolved. All code changes are implemented, tested, and the backend server is running with the updates.
