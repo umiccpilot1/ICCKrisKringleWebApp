@@ -1,7 +1,37 @@
+function resolveRecipientMap(employees) {
+  const map = new Map();
+  employees.forEach((employee) => {
+    if (employee.id != null) {
+      map.set(employee.id, employee);
+    }
+  });
+  return map;
+}
+
+function hydrateEmployeesWithRecipients(employees) {
+  const recipientMap = resolveRecipientMap(employees);
+  return employees.map((employee) => {
+    if (!employee.recipient && employee.recipient_id && recipientMap.has(employee.recipient_id)) {
+      const recipient = recipientMap.get(employee.recipient_id);
+      return {
+        ...employee,
+        recipient: {
+          id: recipient.id,
+          name: recipient.name,
+          email: recipient.email
+        }
+      };
+    }
+    return employee;
+  });
+}
+
 export default function AssignmentList({ employees }) {
   if (!employees.length) {
     return <p className="mt-6 text-sm text-muted-700 text-center">No employee data yet.</p>;
   }
+
+  const hydratedEmployees = hydrateEmployeesWithRecipients(employees);
 
   // Create zigzag display order for better chain visualization
   const createZigzagOrder = (empList) => {
@@ -31,7 +61,7 @@ export default function AssignmentList({ employees }) {
     return zigzagOrder;
   };
 
-  const displayEmployees = createZigzagOrder(employees);
+  const displayEmployees = createZigzagOrder(hydratedEmployees);
 
   return (
     <div className="mt-6 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-card">

@@ -82,13 +82,14 @@ function resetDatabase() {
       console.log(`   - ${admin.name} (${admin.email})`);
     });
     
-    console.log('\n🎯 Next steps:');
-    console.log('   1. Upload employee list via Admin Panel');
-    console.log('      (Only non-admin employees will participate in Secret Santa)');
-    console.log('   2. Set wishlist deadline (optional)');
-    console.log('   3. Generate Secret Santa assignments');
-    console.log('      (Admins are automatically excluded)');
-    console.log('   4. Send assignment notifications\n');
+  console.log('\n🎯 Next steps:');
+  console.log('   1. Upload the employee roster (.xlsx/.xls) via Admin Panel → "Upload employees".');
+  console.log('      - Only non-admin employees participate in Secret Santa pairings.');
+  console.log('   2. Place employee PNG photos in frontend/public/images/employees.');
+  console.log('      - Use Admin Panel → "Manage employee photos" to auto-map or manually resolve conflicts.');
+  console.log('   3. Configure wishlist deadline and visibility (Admin Panel → "Wishlist settings").');
+  console.log('   4. Generate Secret Santa assignments (Admins remain excluded automatically).');
+  console.log('   5. Trigger assignment emails or wishlist reminders using the notification modal.\n');
 
   } catch (error) {
     console.error('\n❌ Error during database reset:', error.message);
